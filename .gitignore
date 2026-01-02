@@ -2,3 +2,5 @@ node_modules
 .env
 /generated/prisma
 migrations
+/public/css/input.css
+/public/css/output.css
