@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>Login</title>
+</head>
+<body>
+    <%- include("partials/header") %> 
+    <main class="main">
+        <a href="/" class="back-home-link">&#x2039; back to homepage</a>
+        <div class="form-wrapper">
+            <h1 class="form-title">Log in</h1>
+            <%- include('partials/validation_errors') %>
+            <form action="/log-in" method="POST" class="form">            
+                <label for="username">Username</label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    id="username"
+                    value="<%= data ? data.username : '' %>" 
+                    minlength="1" 
+                    maxlength="32" 
+                    required
+                >
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="password"
+                    value="<%= data ? data.password : '' %>" 
+                    minlength="5" 
+                    maxlength="16" 
+                    required
+                >
+                <div class="buttons-container">
+                    <a href="/sign-up">Not registered yet?</a>
+                    <button type="submit">Log in</button>            
+                </div>           
+            </form>
+        </div>
+    </main>
+    <%- include("partials/footer") %>     
+</body>
+</html>

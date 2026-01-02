@@ -4,7 +4,12 @@ import path from 'path';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import expressSessionWithPrismaSessionStore from './config/session.js';
+import passport from './config/passport.js';
 import indexRouter from './routes/indexRouter.js';
+import signupRouter from './routes/signupRouter.js';
+import loginRouter from './routes/loginRouter.js';
+import logoutRouter from './routes/logoutRouter.js';
+import addCurrentUserToLocals from './middlewares/addCurrentUserToLocals.js';
     
 const app = express();
 
@@ -17,8 +22,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(expressSessionWithPrismaSessionStore());
+app.use(passport.session());
+
+app.use(addCurrentUserToLocals);
 
 app.use('/', indexRouter);
+app.use('/sign-up', signupRouter);
+app.use('/log-in', loginRouter);
+app.use('/log-out', logoutRouter);
 
 const PORT = process.env.PORT || 3000;
 
