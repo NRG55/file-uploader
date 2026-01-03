@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/output.css" rel="stylesheet">    
+    <title>My Storage</title>
+</head>
+<body class="flex flex-col min-h-svh bg-gray-900 px-8">
+    <%- include("partials/header") %>
+    <main class="grow">      
+        <nav class="flex align-middle mt-4 mb-8">
+            <a href="/" class="text-gray-400 hover:text-white">home</a>
+            <span class="text-gray-400 mx-2">|</span> 
+            <a href="storage" class="text-cyan-400 hover:text-white">my storage</a>
+        </nav>            
+        <div class="flex">                
+            <a href="/folder/create" class="flex mr-2 border border-transparent rounded-xs px-4 py-1 text-gray-400 hover:text-white hover:border-white">
+                <span class="mr-2 text-3xl font-light">&#43;</span>
+                <button class="">New Folder</button>
+            </a>
+            <a href="/file/upload" class="flex text-gray-400 border border-transparent rounded-xs px-4 py-1 hover:text-white hover:border-white">
+                <span class="mr-2 text-3xl font-light">&#43;</span>
+                <button class="">New File</button>
+            </a>
+        </div>       
+    </main>    
+    <%- include("partials/footer") %>    
+</body>
+</html>

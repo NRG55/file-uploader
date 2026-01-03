@@ -1,0 +1,28 @@
+<header class="flex justify-between py-6 align-middle">   
+    <a href="/" class="flex items-end">
+        <div class="mr-4">
+            <img src="/images/logo.svg" class="w-10"/>
+        </div>
+        <h1 class="text-white mr-4 font-bold text-xl">File<span class="text-gray-400">Uploader</span></h1>
+    </a>    
+    <% if (!currentUser) { %>
+        <div class="flex items-center">
+            <a href="/log-in">
+                <button class=" mr-2 py-1 px-4 rounded-xs text-white shadow-lg border border-cyan-300 hover:border-cyan-500 transition">
+                    Log in
+                </button>
+            </a>
+            <a href="/sign-up">
+                <button class=" py-1 px-4 border border-transparent rounded-xs bg-origin-border bg-linear-to-r from-cyan-400 to-purple-500 text-white font-bold shadow-lg hover:from-cyan-500 hover:to-purple-600 transition">
+                    Sign up
+                </button>
+            </a>
+        </div>
+    <% } else { %>                                       
+        <a href="/log-out">
+            <button class=" mr-2 py-1 px-4 rounded-xs text-white shadow-lg border border-cyan-300 hover:border-cyan-500 transition">
+                Log out
+            </button>
+        </a>       
+    <% } %>
+</header>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/output.css" rel="stylesheet">    
+    <title>Home</title>
+</head>
+<body class="flex flex-col min-h-svh bg-gray-900 px-8">
+    <%- include("partials/header") %>
+    <main class="grow">
+        <nav class="flex align-middle mt-4 mb-8">
+            <a href="/" class="text-cyan-400 hover:text-white">home</a>
+            <span class="text-gray-400 mx-2">|</span> 
+            <a href="storage" class="text-gray-400 hover:text-white">my storage</a>
+        </nav>      
+    </main>    
+    <%- include("partials/footer") %>    
+</body>
+</html>
