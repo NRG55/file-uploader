@@ -1,14 +1,18 @@
+import { createFolder, getAllFolders } from '../db/queries.js';
 import multer from 'multer';
 
-const upload = multer({ dest: 'uploads/' }).single('uploadedFile');
-
-const storageGet = (req, res) => {
-        res.render('storage');     
+const storageGet = async (req, res) => {
+    const userId  = req.user.id;
+    const folders = await getAllFolders(userId);
+    
+    res.render('storage', { folders });     
 };
 
 //TODO: add file validation
 const fileUploadPost = [   
     (req, res, next) => {
+        const upload = multer({ dest: 'uploads/' }).single('uploadedFile');
+             
         upload(req, res, (error) => {
             if (error instanceof multer.MulterError) {
                 // A Multer error occurred when uploading.
@@ -22,8 +26,24 @@ const fileUploadPost = [
         res.redirect('/storage');      
     }  
 ];
+//TODO: add folder name validation
+const createFolderPost = [
+    async (req, res, next) => {
+        const userId  = req.user.id;
+        const { newFolderName } = req.body;
+
+        try {
+            await createFolder(userId, newFolderName);           
+            res.redirect('/storage');
+
+        } catch (error) {
+            next(error);
+        }      
+    }
+];
 
 export { 
     storageGet,
-    fileUploadPost 
+    fileUploadPost,
+    createFolderPost 
 };

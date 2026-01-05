@@ -1,9 +1,9 @@
-import prisma from "../config/prisma.js";
+import prisma from "../middlewares/prisma.js";
 import bcrypt from "bcryptjs";
 
 /* -------------- USER -------------- */
 
-const addUser = async (username, password) => {       
+const createUser = async (username, password) => {       
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
@@ -36,8 +36,37 @@ const getUserById = async (id) => {
     return user;
 };
 
+/* -------------- FOLDER -------------- */
+
+const createFolder = async (userId, folderName) => { 
+    const folder = await prisma.folder.create({
+        data: {
+            name: folderName,
+            user: {
+                connect: {
+                    id: userId
+                }
+            }
+        }
+    });
+console.log(folder)
+    return folder;  
+};
+
+const getAllFolders = async (userId) => { 
+    const folders = await prisma.folder.findMany({
+        where: {
+            userId
+        }
+    });
+console.log(folders)
+    return folders;  
+}; 
+
 export {
-    addUser, 
+    createUser, 
     getUserByUsername,
-    getUserById
+    getUserById,
+    createFolder,
+    getAllFolders
 };

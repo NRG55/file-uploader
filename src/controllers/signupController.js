@@ -1,4 +1,4 @@
-import { addUser, getUserByUsername } from '../db/queries.js';
+import { createUser, getUserByUsername } from '../db/queries.js';
 import validateSignup from '../middlewares/validators/validateSignup.js';
 import { validationResult, matchedData } from 'express-validator';
 
@@ -26,7 +26,7 @@ const signupPost = [
 
         const { username, password } = matchedData(req);          
 
-            await addUser(username, password);          
+            await createUser(username, password);          
             // auto login after registration
             const user = await getUserByUsername(username);
 

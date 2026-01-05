@@ -1,6 +1,6 @@
 import validateLogin from '../middlewares/validators/validateLogin.js';
 import { validationResult } from 'express-validator';
-import passport from '../config/passport.js';
+import passport from '../middlewares/passport.js';
 
 const loginGet = (req, res) => {
     res.render('log_in', { data: {} });
