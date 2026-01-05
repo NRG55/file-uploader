@@ -1,8 +1,12 @@
 import { Router } from "express";
-import storageController from "../controllers/storageController.js";
+import { 
+    storageGet,
+    fileUploadPost
+ } from "../controllers/storageController.js";
 
-const storageRrouter = Router();
+const storageRouter = Router();
 
-storageRrouter.get('/', storageController);
+storageRouter.get('/', storageGet);
+storageRouter.post('/file/upload', fileUploadPost);
 
-export default storageRrouter;
+export default storageRouter;
