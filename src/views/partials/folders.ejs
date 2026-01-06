@@ -1,0 +1,21 @@
+<div class="flex-1 bg-gray-800 p-4">    
+    <% if (locals.folders) { 
+        folders.forEach((folder) => { %>
+            <div class="flex items-center justify-between mb-4">           
+                <a href="storage/folder/<%= folder.id %>" class="cursor-pointer flex items-center justify-between text-white">
+                    <div class="mr-2">
+                        <img src="/images/folder.svg" class="w-12"/>
+                    </div>                
+                    <%= folder.name  %>
+                                
+                </a>
+                <div>
+                    <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>
+                </div>
+                <div class="hidden">                
+                    <button class="mr-4 text-gray-400">Rename</button>
+                    <button class="text-red-400">Delete</button>
+                </div>
+            </div>  
+    <% })} %>    
+</div>

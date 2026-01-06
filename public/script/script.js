@@ -1,49 +1,67 @@
-const popupNewFolder = document.getElementById('popupNewFolder');
-const popupNewFile = document.getElementById('popupNewFile');
+const newFolderFormOverlay = document.getElementById('newFolderFormOverlay');
+const newFileFormOverlay = document.getElementById('newFileFormOverlay');
+const newFolderForm = document.getElementById('newFolderForm');
+const newFileForm = document.getElementById('newFileForm');
 const addNewFolderButton = document.getElementById('addNewFolderButton');
 const addNewFileButton = document.getElementById('addNewFileButton');
-const closePopupNewFolderButton = document.getElementById('closePopupNewFolderButton');
-const closePopupNewFileButton = document.getElementById('closePopupNewFileButton');
+const closeNewFolderFormButton = document.getElementById('closeNewFolderFormButton');
+const closeNewFileFormButton = document.getElementById('closeNewFileFormButton');
 
 function addListenerToAddNewFolderButton() {
-    if (addNewFolderButton && popupNewFolder) {    
+    if (addNewFolderButton && newFolderFormOverlay) {    
         addNewFolderButton.addEventListener("click", () => {
-            popupNewFolder.classList.remove('hidden');
-            popupNewFolder.classList.add('flex');
+            newFolderFormOverlay.classList.remove('hidden');
+            newFolderFormOverlay.classList.add('flex');
+
+            setTimeout(() => {
+                newFolderFormOverlay.classList.add('opacity-100');
+            });
         });
     };    
 };
 
 function addListenerToAddNewFileButton() {
-    if (addNewFileButton && popupNewFile) {    
+    if (addNewFileButton && newFileFormOverlay) {    
         addNewFileButton.addEventListener("click", () => {
-            popupNewFile.classList.remove('hidden');
-            popupNewFile.classList.add('flex');
+            newFileFormOverlay.classList.remove('hidden');           
+            newFileFormOverlay.classList.add('flex');
+            
+            setTimeout(() => {
+                newFileFormOverlay.classList.add('opacity-100');
+            });
         });
     };    
 };
 
-function addListenerClosePopupNewFolder() {
-    if (closePopupNewFolderButton && popupNewFolder) {    
-        closePopupNewFolderButton.addEventListener("click", () => {
-            popupNewFolder.classList.remove('flex');
-            popupNewFolder.classList.add('hidden');
-        });
+const hideForm = (form) => {
+    form.classList.remove('flex');
+    form.classList.remove('opacity-100');
+    form.classList.add('hidden');
+};
+
+function addListenersCloseNewFolderForm() {
+    if (closeNewFolderFormButton && newFolderFormOverlay) {    
+        closeNewFolderFormButton.addEventListener("click", () => hideForm(newFolderFormOverlay));
+        newFolderFormOverlay.addEventListener("click", () => hideForm(newFolderFormOverlay));
+        newFolderForm.addEventListener("click", (e) => {
+            e.stopImmediatePropagation();
+        });      
     };    
 };
 
-function addListenerClosePopupNewFile() {
-    if (closePopupNewFileButton && popupNewFile) {    
-        closePopupNewFileButton.addEventListener("click", () => {
-            popupNewFile.classList.remove('flex');
-            popupNewFile.classList.add('hidden');
-        });
+function addListenersCloseNewFileForm() {
+    if (closeNewFileFormButton && newFileFormOverlay) {    
+        closeNewFileFormButton.addEventListener("click", () => hideForm(newFileFormOverlay));
+        newFileFormOverlay.addEventListener("click", () => hideForm(newFileFormOverlay));
+        newFileForm.addEventListener("click", (e) => {
+            e.stopImmediatePropagation();
+        });       
     };    
 };
 
 document.addEventListener("DOMContentLoaded", () => {
 	addListenerToAddNewFolderButton();
     addListenerToAddNewFileButton();
-    addListenerClosePopupNewFolder();
-    addListenerClosePopupNewFile();
+    addListenersCloseNewFolderForm();
+    addListenersCloseNewFileForm();
 });

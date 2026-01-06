@@ -13,7 +13,7 @@
         <nav class="flex align-middle mt-4 mb-8">
             <a href="/" class="text-gray-400 hover:text-white">home</a>
             <span class="text-gray-400 mx-2">|</span> 
-            <a href="storage" class="text-cyan-400 hover:text-white">my storage</a>
+            <a href="/storage" class="text-cyan-400 hover:text-white">my storage</a>
         </nav>            
         <div class="flex mb-4">                          
             <button id="addNewFolderButton" class="flex items-center mr-2 border border-transparent rounded-xs px-4 py-1 text-gray-400 
@@ -31,14 +31,9 @@
                 New File
             </button>          
         </div>
-        <div class="flex-1 bg-gray-800">
-            <% if (locals.folders) { 
-                folders.forEach((folder) => { %>
-                    <div><%= folder.name %></div>
-            <% })} %>
-        </div>
-        <%- include("partials/new_folder_popup") %>
-        <%- include("partials/new_file_popup") %>    
+        <%- include("partials/folders") %>
+        <%- include("partials/new_folder_form") %>
+        <%- include("partials/new_file_form") %>    
     </main>    
     <%- include("partials/footer") %>    
 </body>

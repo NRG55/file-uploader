@@ -12,7 +12,7 @@ const storageGet = async (req, res) => {
 const fileUploadPost = [   
     (req, res, next) => {
         const upload = multer({ dest: 'uploads/' }).single('uploadedFile');
-             
+
         upload(req, res, (error) => {
             if (error instanceof multer.MulterError) {
                 // A Multer error occurred when uploading.
@@ -42,8 +42,19 @@ const createFolderPost = [
     }
 ];
 
+const folderGet = async (req, res) => {
+    const { userId } = req.user;
+    const { folderId } = req.params.folderId;
+
+    res.render('storage')
+
+
+
+}
+
 export { 
     storageGet,
     fileUploadPost,
-    createFolderPost 
+    createFolderPost,
+    folderGet 
 };

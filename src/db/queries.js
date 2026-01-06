@@ -49,7 +49,7 @@ const createFolder = async (userId, folderName) => {
             }
         }
     });
-console.log(folder)
+
     return folder;  
 };
 
@@ -59,7 +59,7 @@ const getAllFolders = async (userId) => {
             userId
         }
     });
-console.log(folders)
+
     return folders;  
 }; 
 
