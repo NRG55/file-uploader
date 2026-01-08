@@ -1,59 +1,68 @@
-import { createFolder, getAllFolders } from '../db/queries.js';
-import multer from 'multer';
+import { createFolder, getFolder, getStorageId, createFile } from '../db/queries.js';
 
-const storageGet = async (req, res) => {
-    const userId  = req.user.id;
-    const folders = await getAllFolders(userId);
-    
-    res.render('storage', { folders });     
+const storageGet = async (req, res, next) => {
+    try {
+        const storageId = await getStorageId(req.user.id);
+
+        res.redirect(`/storage/${storageId}`);
+
+    } catch (error) {
+        next(error);
+    };    
 };
 
 //TODO: add file validation
 const fileUploadPost = [   
-    (req, res, next) => {
-        const upload = multer({ dest: 'uploads/' }).single('uploadedFile');
+    async (req, res, next) => {
+        const userId  = req.user.id;
+        const fileName = req.file.originalname;
+        const parentFolderId  = Number(req.params.parentFolderId);
 
-        upload(req, res, (error) => {
-            if (error instanceof multer.MulterError) {
-                // A Multer error occurred when uploading.
-                console.error('Multer error: ' + error);
-            } else if (error) {
-                // An unknown error occurred when uploading.
-                console.error('Unknown error when uploading file: ' + error);
-            };           
-        });
+        try {
+            await createFile(userId, fileName, parentFolderId)
 
-        res.redirect('/storage');      
-    }  
+            res.redirect(`/storage/${parentFolderId}`);
+
+        } catch (error) {
+            next(error);
+        };              
+    } 
 ];
+
 //TODO: add folder name validation
 const createFolderPost = [
     async (req, res, next) => {
         const userId  = req.user.id;
-        const { newFolderName } = req.body;
+        const newFolderName = req.body.newFolderName;
+        const parentFolderId  = Number(req.params.parentFolderId);
 
         try {
-            await createFolder(userId, newFolderName);           
-            res.redirect('/storage');
+            await createFolder(userId, parentFolderId, newFolderName);
+
+            res.redirect(`/storage/${parentFolderId}`);
 
         } catch (error) {
             next(error);
-        }      
+        };      
     }
 ];
 
-const folderGet = async (req, res) => {
-    const { userId } = req.user;
-    const { folderId } = req.params.folderId;
+const folderGet = async (req, res, next) => {
+    const userId = req.user.id;
+    const folderId = Number(req.params.folderId);
 
-    res.render('storage')
+    try {
+        const folder = await getFolder(userId, folderId);
 
+        res.render('storage', { folder });
 
-
+    } catch (error) {
+        next(error);
+    }  
 }
 
-export { 
-    storageGet,
+export {
+    storageGet,   
     fileUploadPost,
     createFolderPost,
     folderGet 

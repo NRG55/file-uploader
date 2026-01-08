@@ -9,7 +9,12 @@ const createUser = async (username, password) => {
     const user = await prisma.user.create({
         data: {
             username,
-            password: hashedPassword
+            password: hashedPassword,
+            folders: {
+                create: {
+                    name: "My Storage"
+                }
+            }
         }
     });
 
@@ -38,35 +43,66 @@ const getUserById = async (id) => {
 
 /* -------------- FOLDER -------------- */
 
-const createFolder = async (userId, folderName) => { 
+const createFolder = async (userId, parentFolderId, folderName) => { 
     const folder = await prisma.folder.create({
         data: {
+            userId: userId,
+            parentFolderId: parentFolderId,
             name: folderName,
-            user: {
-                connect: {
-                    id: userId
-                }
-            }
         }
     });
 
     return folder;  
 };
 
-const getAllFolders = async (userId) => { 
-    const folders = await prisma.folder.findMany({
+// Root folder id
+const getStorageId = async (userId) => {   
+    const storage = await prisma.folder.findFirst({
         where: {
-            userId
+            userId: userId,
+            parentFolderId: null           
+        }      
+    });
+
+    return storage.id;
+}
+
+const getFolder = async (userId, folderId) => {
+    const folder = await prisma.folder.findFirst({
+        where: {
+            id: folderId,
+            userId: userId
+        },
+        include: {
+            parentFolder: true,
+            childFolders: true,
+            files: true
         }
     });
 
-    return folders;  
-}; 
+    return folder;
+}
+
+/* -------------- FILE -------------- */
+
+const createFile = async (userId, fileName, folderId) => {   
+    const file = await prisma.file.create({
+        data: {
+            name: fileName,            
+            userId: userId,            
+            folderId: folderId,            
+        }
+    });
+
+    return file;  
+};
 
 export {
     createUser, 
     getUserByUsername,
     getUserById,
     createFolder,
-    getAllFolders
+    getStorageId,
+    getFolder,   
+    createFile
 };

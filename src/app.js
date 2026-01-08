@@ -3,7 +3,7 @@ import express from 'express';
 import path from 'path';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import expressSessionWithPrismaSessionStore from './middlewares/session.js';
+import session from './middlewares/session.js';
 import passport from './middlewares/passport.js';
 import indexRouter from './routes/indexRouter.js';
 import signupRouter from './routes/signupRouter.js';
@@ -22,7 +22,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.urlencoded({ extended: true }));
 
-app.use(expressSessionWithPrismaSessionStore());
+app.use(session()); // Express session with Prisma session store
 app.use(passport.session());
 
 app.use(addCurrentUserToLocals);

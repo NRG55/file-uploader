@@ -1,7 +1,7 @@
 <div id="newFileFormOverlay" class="fixed inset-0 bg-black/50 items-center justify-center hidden opacity-0 transition-opacity duration-200">  
     <form
         id="newFileForm"
-        action="storage/file/upload"
+        action="/storage/<%= folder.id %>/upload-file"
         method="POST"
         enctype="multipart/form-data"
         class="flex w-100 flex-col rounded-xs border p-4 bg-gray-800 shadow-xl"
