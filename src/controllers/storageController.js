@@ -1,4 +1,5 @@
 import { createFolder, getFolder, getStorageId, createFile } from '../db/queries.js';
+import { getFolderAndParentFolders } from '../services/storageService.js';
 
 const storageGet = async (req, res, next) => {
     try {
@@ -50,15 +51,16 @@ const createFolderPost = [
 const folderGet = async (req, res, next) => {
     const userId = req.user.id;
     const folderId = Number(req.params.folderId);
+    const foldersArray = await getFolderAndParentFolders(folderId); // [{id: 1, name: 'folder name'}, ...]
 
     try {
         const folder = await getFolder(userId, folderId);
 
-        res.render('storage', { folder });
+        res.render('storage', { folder, foldersArray });
 
     } catch (error) {
         next(error);
-    }  
+    };  
 }
 
 export {

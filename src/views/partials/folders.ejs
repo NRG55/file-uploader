@@ -1,12 +1,18 @@
 <div class="flex-1 bg-gray-800 p-4">    
     <% if (locals.folder) { 
         folder.childFolders.forEach((folder) => { %>
-            <div class="flex items-center justify-between mb-4">           
-                <a href="/storage/<%= folder.id %>" class="cursor-pointer flex items-center justify-between text-white">
-                    <div class="mr-2">
-                        <img src="/images/folder.svg" class="w-12"/>
+            <div class="flex items-center justify-between mb-2">           
+                <a 
+                    href="/storage/<%= folder.id %>" 
+                    class="relative cursor-pointer flex items-center w-full h-16 text-white pl-4
+                          hover:bg-gray-700"
+                >
+                    <div class="mr-3">
+                        <img src="/images/folder.svg" class="w-11"/>
                     </div>                
-                    <%= folder.name %>                                
+                    <div class="absolute left-18 bottom-3.5">
+                        <%= folder.name %>
+                    </div>                                
                 </a>
                 <div>
                     <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>
@@ -20,11 +26,17 @@
     <% if (locals.folder) { 
         folder.files.forEach((file) => { %>
             <div class="flex items-center justify-between mb-4">           
-                <a href="/storage/<%= folder.id %>" class="cursor-pointer flex items-center justify-between text-white">
-                    <div class="mr-2">
+                <a 
+                    href="/storage/<%= folder.id %>" 
+                    class="relative cursor-pointer flex items-center w-full h-16 text-white pl-4
+                          hover:bg-gray-700"
+                >
+                    <div class="mr-3">
                         <img src="/images/file.svg" class="w-8"/>
                     </div>                
-                    <%= file.name %>                                
+                    <div class="absolute left-15 bottom-2">
+                        <%= file.name %>
+                    </div>                                
                 </a>
                 <div>
                     <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>
