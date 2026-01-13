@@ -1,12 +1,12 @@
 <nav aria-label="Folders navigation" class="md:hidden mb-8">
     <ul class="">
-        <% if (locals.foldersArray) {
-            foldersArray.forEach((element, index) => { %>
+        <% if (locals.folderWithParentFoldersArray) {
+            folderWithParentFoldersArray.forEach((element, index) => { %>
                 <a href="/storage/<%= element.id %>" class="float-left py-2">
-                    <% if (foldersArray.length > 1 && index > 0) { %>
-                            <span class="text-gray-400 mx-2"><</span>
-                        <% } %>
-                    <li class="inline-flex <%= index === foldersArray.length - 1 ? 'text-cyan-400' : 'text-gray-400' %>
+                    <% if (folderWithParentFoldersArray.length > 1 && index > 0) { %>
+                        <span class="text-gray-400 mx-2"><</span>
+                    <% } %>
+                    <li class="inline-flex <%= index === folderWithParentFoldersArray.length - 1 ? 'text-cyan-400' : 'text-gray-400' %>
                         hover:text-white"
                     >                       
                         <%= element.name %>                                               

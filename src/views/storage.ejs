@@ -9,32 +9,39 @@
 </head>
 <body class="flex flex-col min-h-svh bg-gray-900 px-8">
     <%- include("partials/header") %>    
-    <main class="grow flex flex-col">      
-        <nav class="hidden md:flex align-middle mt-4 mb-8">
+    <main class="grow flex flex-col 
+                      md:grid 
+                      md:grid-cols-[auto_1fr] 
+                      md:grid-rows-[auto_1fr]"
+    >      
+        <nav class="hidden md:flex col-span-2 align-middle mt-4 mb-8">
             <a href="/" class="text-gray-400 hover:text-white">home</a>
             <span class="text-gray-400 mx-2">|</span> 
             <a href="/storage" class="text-cyan-400 hover:text-white">my storage</a>
         </nav>
-        <%- include("partials/folders_nav_mobile") %>            
-        <div class="flex mb-4">                          
-            <button 
-                id="addNewFolderButton" 
-                class="relative flex items-center mr-4 border border-gray-400  md:border-transparent rounded-xs pl-10 pr-4 py-1 text-gray-400 
-                            hover:text-white 
-                            hover:border-white"
-            >
-                <span class="absolute left-3.5 text-3xl font-light">&#43;</span>
-                New Folder
-            </button>                         
-            <button id="addNewFileButton" class="relative flex items-center border  border-gray-400  md:border-transparent rounded-xs pl-10 pr-4 py-1 text-gray-400 
-                            hover:text-white 
-                            hover:border-white"
-            >
-                <span class="absolute left-3.5 text-3xl font-light">&#43;</span>
-                New File
-            </button>          
-        </div>        
-        <%- include("partials/folders") %>
+        <%- include("partials/folders_nav_mobile") %>
+        <%- include("partials/sidebar") %>
+        <div class="grow flex flex-col">            
+            <div class="flex mb-4">                          
+                <button 
+                    id="addNewFolderButton" 
+                    class="relative flex items-center mr-4 border border-gray-400  md:border-transparent rounded-xs pl-10 pr-4 py-1 text-gray-400 
+                                hover:text-white 
+                                hover:border-white"
+                >
+                    <span class="absolute left-3.5 text-3xl font-light">&#43;</span>
+                    New Folder
+                </button>                         
+                <button id="addNewFileButton" class="relative flex items-center border  border-gray-400  md:border-transparent rounded-xs pl-10 pr-4 py-1 text-gray-400 
+                                hover:text-white 
+                                hover:border-white"
+                >
+                    <span class="absolute left-3.5 text-3xl font-light">&#43;</span>
+                    New File
+                </button>          
+            </div>        
+            <%- include("partials/folders") %>
+        </div>
         <%- include("partials/new_folder_form") %>
         <%- include("partials/new_file_form") %>    
     </main>

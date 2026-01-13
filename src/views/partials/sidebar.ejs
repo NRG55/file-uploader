@@ -1,0 +1,23 @@
+<section class="mr-8">
+    <nav aria-label="Folders navigation" class="hidden md:grid">
+        <div class="folders-tree">
+            <% function renderFoldersTree(folders) {
+                folders.forEach((folder) => { %>
+                    <div class="folder-container pl-4">
+                        <a 
+                            href="/storage/<%= folder.id %>" 
+                            class="text-gray-600
+                                hover:text-white"
+                        >
+                            <%= folder.name %>                       
+                        </a>
+                        <% if (folder.childFolders.length > 0) {
+                            renderFoldersTree(folder.childFolders) 
+                        } %>                    
+                    </div>               
+                <% }) %>
+            <% } %>
+            <%= renderFoldersTree(foldersTreeArray) %> 
+        </div>
+    </nav>
+</section>

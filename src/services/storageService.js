@@ -1,6 +1,6 @@
 import prisma from '../middlewares/prisma.js';
 
-export const getFolderAndParentFolders = async (folderId) => {
+export const getFolderWithParentFolders = async (folderId) => {
     if (!folderId) {
         return [];
     };
@@ -29,3 +29,35 @@ export const getFolderAndParentFolders = async (folderId) => {
 
     return foldersArray;
 }
+
+export const getFoldersTree = async (userId) => {
+    const folders = await prisma.folder.findMany({
+        where: { userId }
+    });
+
+    const foldersMap = new Map();
+
+    for (const folder of folders) {
+        foldersMap.set(folder.id, { id: folder.id, name: folder.name, childFolders: [] });
+    };
+
+    const foldersTreeArray = [];
+
+    for (const folder of folders) {
+        const currentFolder = foldersMap.get(folder.id);
+
+        if (folder.parentFolderId) {
+            const parentFolder = foldersMap.get(folder.parentFolderId);
+
+            if (parentFolder) {
+                parentFolder.childFolders.push(currentFolder);
+            };
+
+        } else { 
+            // parentFolderId = null; (this is a root folder)
+            foldersTreeArray.push(currentFolder);
+        };
+    };    
+
+    return foldersTreeArray[0].childFolders;
+};
