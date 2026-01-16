@@ -38,26 +38,40 @@ export const getFoldersTree = async (userId) => {
     const foldersMap = new Map();
 
     for (const folder of folders) {
-        foldersMap.set(folder.id, { id: folder.id, name: folder.name, childFolders: [] });
+        foldersMap.set(folder.id, 
+            { 
+                id: folder.id, 
+                name: folder.name, 
+                childFolders: [], 
+                files: [] 
+            }
+        );
     };
 
     const foldersTreeArray = [];
 
     for (const folder of folders) {
         const currentFolder = foldersMap.get(folder.id);
+        const files = await prisma.file.findMany({
+            where: { folderId: folder.id }
+        });
+
+        if (files && files.length > 0) {
+            currentFolder.files.push(...files);
+        };
 
         if (folder.parentFolderId) {
             const parentFolder = foldersMap.get(folder.parentFolderId);
 
             if (parentFolder) {
                 parentFolder.childFolders.push(currentFolder);
-            };
+            };            
 
         } else { 
             // parentFolderId = null; (this is a root folder)
             foldersTreeArray.push(currentFolder);
         };
-    };    
+    };  
 
-    return foldersTreeArray[0].childFolders;
+    return foldersTreeArray;
 };

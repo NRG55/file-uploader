@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/output.css" rel="stylesheet">
-    <script defer src="/script/script.js"></script>    
+    <script defer src="/script/script.js"></script>
+    <script defer src="/script/sidebar.js"></script>    
     <title>My Storage</title>
 </head>
 <body class="flex flex-col min-h-svh bg-gray-900 px-8">
     <%- include("partials/header") %>    
     <main class="grow flex flex-col 
                       md:grid 
-                      md:grid-cols-[auto_1fr] 
+                      md:grid-cols-[360px_1fr] 
                       md:grid-rows-[auto_1fr]"
     >      
         <nav class="hidden md:flex col-span-2 align-middle mt-4 mb-8">
@@ -22,7 +23,7 @@
         <%- include("partials/folders_nav_mobile") %>
         <%- include("partials/sidebar") %>
         <div class="grow flex flex-col">            
-            <div class="flex mb-4">                          
+            <div class="flex mb-6">                          
                 <button 
                     id="addNewFolderButton" 
                     class="relative flex items-center mr-4 border border-gray-400  md:border-transparent rounded-xs pl-10 pr-4 py-1 text-gray-400 
