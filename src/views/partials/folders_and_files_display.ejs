@@ -1,0 +1,52 @@
+<div id="foldersAndFilesContainer" class="flex-1 bg-gray-900 p-4 border-t border-gray-700">    
+    <% if (locals.folder) { 
+        folder.childFolders.forEach((folder) => { %>
+            <div class="relative flex items-center justify-between mb-2">           
+                <a 
+                    href="/storage/<%= folder.id %>" 
+                    class="relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4 border border-transparent  
+                          hover:text-gray-300"
+                    data-folder-link-id="<%= folder.id %>"
+                >
+                    <div class="">
+                        <img src="/images/folder.svg" class="w-8"/>
+                    </div>                
+                    <div class="">
+                        <%= folder.name %>
+                    </div>                                
+                </a>
+                <%- include("./rename_folder_form", { folder: folder }) %>
+                <div class="relative flex">
+                    <button class="folder-option-menu-button hover:bg-gray-800" data-button-id="<%= folder.id %>">
+                        <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
+                    </button>  
+                    <%- include("./folder_options_menu", { folderId: folder.id }) %>
+                </div>                                            
+            </div>
+             
+    <% })} %>
+    <% if (locals.folder) { 
+        folder.files.forEach((file) => { %>
+            <div class="flex items-center justify-between">           
+                <a 
+                    href="/storage/<%= folder.id %>" 
+                    class="relative cursor-pointer flex gap-4 items-center w-full h-10 mb-2 text-white pl-4
+                          hover:bg-gray-800"
+                >
+                    <div class="">
+                        <img src="/images/file.svg" class="w-5"/>
+                    </div>                
+                    <div class="">
+                        <%= file.name %>
+                    </div>                                
+                </a>
+                <div>
+                    <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>
+                </div>
+                <div class="hidden">                
+                    <button class="mr-4 text-gray-400">Rename</button>
+                    <button class="text-red-400">Delete</button>
+                </div>
+            </div>  
+    <% })} %>     
+</div>
