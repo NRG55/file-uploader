@@ -32,7 +32,8 @@ export const getFolderWithParentFolders = async (folderId) => {
 
 export const getFoldersTree = async (userId) => {
     const folders = await prisma.folder.findMany({
-        where: { userId }
+        where: { userId },
+        orderBy: { createdAt: 'asc'}
     });
 
     const foldersMap = new Map();

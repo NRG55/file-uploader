@@ -1,6 +1,6 @@
 <form
     id="renameFolderForm"
-    action="/storage/<%= folder.id %>/rename-folder"
+    action="/storage/<%= parentFolderId %>/rename-folder/<%= folder.id %>"
     method="POST"            
     class="hidden relative gap-4 items-center w-full h-10 text-white pl-4
            hover:border-gray-700"

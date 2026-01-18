@@ -1,4 +1,4 @@
-import { createFolder, getFolder, getStorageId, createFile } from '../db/queries.js';
+import { createFolder, renameFolder, deleteFolder, getFolder, getStorageId, createFile } from '../db/queries.js';
 import { getFolderWithParentFolders, getFoldersTree } from '../services/storageService.js';
 
 const storageGet = async (req, res, next) => {
@@ -48,6 +48,37 @@ const createFolderPost = [
     }
 ];
 
+const renameFolderPost = [
+    async (req, res, next) => {        
+        const folderId = Number(req.params.folderId);
+        const newFolderName = req.body.newFolderName;
+        const parentFolderId  = Number(req.params.parentFolderId);
+
+        try {
+            await renameFolder(folderId, newFolderName);
+
+            res.redirect(`/storage/${parentFolderId}`);
+
+        } catch (error) {
+            next(error);
+        };      
+    }
+];
+
+const deleteFolderGet = async (req, res, next) => {        
+    const folderId = Number(req.params.folderId);   
+    const parentFolderId  = Number(req.params.parentFolderId);
+
+    try {
+        await deleteFolder(folderId);
+
+        res.redirect(`/storage/${parentFolderId}`);
+
+    } catch (error) {
+        next(error);
+    };      
+};
+
 const folderGet = async (req, res, next) => {
     const userId = req.user.id;
     const folderId = Number(req.params.folderId);
@@ -57,7 +88,12 @@ const folderGet = async (req, res, next) => {
     try {
         const folder = await getFolder(userId, folderId);
 
-        res.render('storage', { folder, folderWithParentFoldersArray, foldersTreeArray });
+        res.render('storage', { 
+                                folder,
+                                parentFolderId: folderId, 
+                                folderWithParentFoldersArray, 
+                                foldersTreeArray 
+                            });
 
     } catch (error) {
         next(error);
@@ -68,5 +104,7 @@ export {
     storageGet,   
     fileUploadPost,
     createFolderPost,
+    renameFolderPost,
+    deleteFolderGet,
     folderGet 
 };

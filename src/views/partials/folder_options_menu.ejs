@@ -1,17 +1,24 @@
-<% const options = ['rename', 'delete'] %>
 <ul 
     data-option-menu-id="<%= folderId %>"
     class="hidden folder-option-menu absolute top-[110%] right-0 p-2 bg-gray-800 z-10"
->
-    <% options.forEach((option) => { %>
-        <li>
-            <button
-                data-button-id="<%= folderId %>" 
+>   
+    <li>
+        <button
+            data-button-id="<%= folderId %>" 
+            class="open-rename-folder-form-button cursor-pointer w-full px-8 py-2 text-white
+                        hover:bg-gray-700"                
+        >
+            rename
+        </button>
+    </li>
+    <li>
+        <a href="/storage/<%= parentFolderId %>/delete-folder/<%= folderId %>">
+            <button                
                 class="open-rename-folder-form-button cursor-pointer w-full px-8 py-2 text-white
-                           hover:bg-gray-700"                
+                            hover:bg-gray-700"                
             >
-                <%= option %>
+                delete
             </button>
-        </li>
-    <% }) %>
+        </a>
+    </li>    
 </ul>

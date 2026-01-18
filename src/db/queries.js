@@ -55,6 +55,27 @@ const createFolder = async (userId, parentFolderId, folderName) => {
     return folder;  
 };
 
+const renameFolder = async (folderId, folderName) => { 
+    const folder = await prisma.folder.update({
+        where: {
+            id: folderId,
+        },
+        data: {
+            name: folderName,
+        },
+    });
+
+    return folder; 
+};
+
+const deleteFolder = async (folderId) => {
+    return await prisma.folder.delete({
+        where: {
+            id: folderId,
+        }       
+    });   
+};
+
 // Root folder id
 const getStorageId = async (userId) => {   
     const storage = await prisma.folder.findFirst({
@@ -75,9 +96,9 @@ const getFolder = async (userId, folderId) => {
         },
         include: {
             parentFolder: true,
-            childFolders: true,
+            childFolders: { orderBy: { createdAt: 'asc' } },
             files: true
-        }
+        }       
     });
 
     return folder;
@@ -102,6 +123,8 @@ export {
     getUserByUsername,
     getUserById,
     createFolder,
+    renameFolder,
+    deleteFolder,
     getStorageId,
     getFolder,   
     createFile

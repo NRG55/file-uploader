@@ -20,10 +20,9 @@
                     <button class="folder-option-menu-button hover:bg-gray-800" data-button-id="<%= folder.id %>">
                         <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
                     </button>  
-                    <%- include("./folder_options_menu", { folderId: folder.id }) %>
+                    <%- include("./folder_options_menu", { folderId: folder.id, parentFolderId }) %>
                 </div>                                            
-            </div>
-             
+            </div>             
     <% })} %>
     <% if (locals.folder) { 
         folder.files.forEach((file) => { %>
