@@ -4,8 +4,9 @@
             <div class="relative flex items-center justify-between mb-2">           
                 <a 
                     href="/storage/<%= folder.id %>" 
-                    class="relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4 border border-transparent  
-                          hover:text-gray-300"
+                    class="folder-link relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4 border border-transparent  
+                          hover:bg-gray-800"
+                    id="folderLink-<%= folder.id %>"
                     data-folder-link-id="<%= folder.id %>"
                 >
                     <div class="">
@@ -15,12 +16,16 @@
                         <%= folder.name %>
                     </div>                                
                 </a>
-                <%- include("./rename_folder_form", { folder: folder }) %>
+                <%- include("./rename_folder_or_file_form", { type: 'folder', folder: folder }) %>
                 <div class="relative flex">
-                    <button class="folder-option-menu-button hover:bg-gray-800" data-button-id="<%= folder.id %>">
+                    <button 
+                        class="option-menu-button hover:bg-gray-800" 
+                        data-type="folder" 
+                        data-id="<%= folder.id %>"
+                    >
                         <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
                     </button>  
-                    <%- include("./folder_options_menu", { folderId: folder.id, parentFolderId }) %>
+                    <%- include("./folder_option_menu", { folderId: folder.id, parentFolderId }) %>
                 </div>                                            
             </div>             
     <% })} %>
@@ -39,13 +44,17 @@
                         <%= file.name %>
                     </div>                                
                 </a>
-                <div>
-                    <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>
-                </div>
-                <div class="hidden">                
-                    <button class="mr-4 text-gray-400">Rename</button>
-                    <button class="text-red-400">Delete</button>
-                </div>
+                <%- include("./rename_folder_or_file_form", { type: 'file', folder: folder, file: file }) %>
+                <div class="relative flex">
+                    <button 
+                        class="option-menu-button hover:bg-gray-800" 
+                        data-id="<%= file.id %>"
+                        data-type="file"
+                    >
+                        <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
+                    </button>  
+                    <%- include("./file_option_menu", { fileId: file.id, parentFolderId }) %>
+                </div>  
             </div>  
     <% })} %>     
 </div>

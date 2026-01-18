@@ -1,0 +1,25 @@
+<ul 
+    data-id="<%= folderId %>"
+    data-type="folder"
+    class="hidden option-menu absolute top-[110%] right-0 p-2 border border-gray-900 bg-gray-800 z-10"
+>   
+    <li>
+        <button
+            data-id="<%= folderId %>" 
+            class="open-rename-folder-form-button cursor-pointer w-full px-8 py-2 text-white
+                        hover:bg-gray-700"                
+        >
+            rename
+        </button>
+    </li>
+    <li>
+        <a href="/storage/<%= parentFolderId %>/delete-folder/<%= folderId %>">
+            <button                
+                class="open-rename-folder-form-button cursor-pointer w-full px-8 py-2 text-white
+                            hover:bg-gray-700"                
+            >
+                delete
+            </button>
+        </a>
+    </li>    
+</ul>

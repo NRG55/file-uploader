@@ -1,23 +1,26 @@
-<form
-    id="renameFolderForm"
-    action="/storage/<%= parentFolderId %>/rename-folder/<%= folder.id %>"
+<form   
+    action="/storage/<%= parentFolderId %>/rename-<%= type === 'folder' ? `folder/${folder.id}` : `file/${file.id}` %>"
     method="POST"            
-    class="hidden relative gap-4 items-center w-full h-10 text-white pl-4
+    class="<%= type === 'folder' ? 'rename-folder-form' : 'rename-file-form' %> hidden relative gap-4 items-center w-full h-10 text-white pl-4
            hover:border-gray-700"
     data-rename-folder-form-id="<%= folder.id %>"
-    >
-    <div class="">
-        <img src="/images/folder.svg" class="w-8"/>
+    >   
+    <div>
+        <% if (type === 'folder') { %>
+            <img src="/images/folder.svg" class="w-8"/>
+        <% } else { %>
+            <img src="/images/file.svg" class="w-5"/>
+        <% } %>        
     </div>                     
     <input                
         type="text"
-        name="newFolderName"
-        id="newFolderName"
-        value="<%= folder.name %>"
-        data-rename-folder-input-id="<%= folder.id %>"               
+        name="<%= type === 'folder' ? 'newFolderName' : 'newFileName' %>"       
+        value="<%= type === 'folder' ? folder.name : file.name %>"
+        data-type="<%= type === 'folder' ? 'folder' : 'file' %>"
+        data-input-id="<%= type === 'folder' ? folder.id : file.id %>"               
         autocomplete="off"
         spellcheck="false"                
-        aria-label="Rename folder"        
+        aria-label="<%= type === 'folder' ?'Rename folder': 'Rename file' %>"        
         class="px-2 py-1 bg-gray-800
                focus:outline-none 
                focus:ring-1 
@@ -29,17 +32,17 @@
         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="rgb(44, 150, 64)" style="color:rgb(44, 150, 64)"  aria-hidden="true" focusable="false">
             <path d="M9.993 19.421 3.286 12.58l1.428-1.401 5.293 5.4 9.286-9.286 1.414 1.414L9.993 19.421z"/>
         </svg>
-    </button>
-    <button 
-        id="closeNewFolderFormButton" 
+    </button>    
+    <button         
         type="button"
-        aria-label="Close" 
-        class="cursor-pointer p-1 inline-flex items-center justify-center text-gray-400 
+        data-id="<%= folder.id %>" 
+        aria-label="Close rename folder form" 
+        class="close-rename-folder-form-button cursor-pointer p-1 inline-flex items-center justify-center text-gray-400 
                 hover:opacity-70"
     >
         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="rgb(174, 65, 65)" aria-hidden="true" focusable="false" style="color:rgb(174, 65, 65)">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
-    </button>            
+    </button>               
 </form>
     
