@@ -25,7 +25,7 @@
                     >
                         <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
                     </button>  
-                    <%- include("./folder_or_file_option_menu", { type: 'folder', folderId: folder.id, parentFolderId }) %>
+                    <%- include("./folder_or_file_option_menu", { type: 'folder', folder: {id: folder.id, name: folder.name}, parentFolderId }) %>
                 </div>                                            
             </div>             
     <% })} %>
@@ -55,7 +55,7 @@
                     >
                         <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
                     </button>  
-                    <%- include("./folder_or_file_option_menu", { type: 'file', fileId: file.id, parentFolderId }) %>
+                    <%- include("./folder_or_file_option_menu", { type: 'file', file: {id: file.id, name: file.name}, parentFolderId }) %>
                 </div>  
             </div>  
     <% })} %>     

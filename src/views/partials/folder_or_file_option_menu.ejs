@@ -1,11 +1,11 @@
 <ul 
-    data-id="<%= type === 'folder' ? folderId : fileId %>"
+    data-id="<%= type === 'folder' ? folder.id : file.id %>"
     data-type="<%= type === 'folder' ? 'folder' : 'file' %>"
     class="hidden option-menu absolute top-[110%] right-0 p-2 border border-gray-900 bg-gray-800 z-10"
 >   
     <li>
         <button
-            data-id="<%= type === 'folder' ? folderId : fileId %>"
+            data-id="<%= type === 'folder' ? folder.id : file.id %>"
             data-type="<%= type === 'folder' ? 'folder' : 'file' %>" 
             class="open-form-button cursor-pointer w-full px-8 py-2 text-white
                         hover:bg-gray-700"                
@@ -13,14 +13,15 @@
             rename
         </button>
     </li>
-    <li>
-        <a href="/storage/<%= parentFolderId %>/delete-<%= type === 'folder' ? `folder/${folderId}` : `file/${fileId}` %>">
-            <button                
-                class="cursor-pointer w-full px-8 py-2 text-red-400
-                            hover:bg-gray-700"                
-            >
-                delete
-            </button>
-        </a>
+    <li>       
+        <button
+            data-id="<%= type === 'folder' ? folder.id : file.id %>"
+            data-type="<%= type === 'folder' ? 'folder' : 'file' %>"
+            data-name="<%= type === 'folder' ? folder.name : file.name %>"                
+            class="open-modal cursor-pointer w-full px-8 py-2 text-red-400
+                        hover:bg-gray-700"                
+        >
+            delete
+        </button>      
     </li>    
 </ul>

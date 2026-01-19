@@ -47,7 +47,7 @@ function toggleOptionMenu() {
     };   
 };
 
-function openForm() {
+function openRenameForm() {
     if (openFormButtons) {
         for (const button of openFormButtons) {
             button.addEventListener("click", () => {
@@ -70,7 +70,7 @@ function openForm() {
     };   
 };
 
-function closeForm() {
+function closeRenameForm() {
     if (closeFormButtons) {
         for (const button of closeFormButtons) {
             const link = container.querySelector(`.link[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
@@ -93,8 +93,65 @@ function closeForm() {
     };   
 };
 
+// ---------------- COFIRM DELETE FOLDER OR FILE MODAL -----------------
+
+const modal = document.getElementById('confirmDeleteModal');
+const form = modal.querySelector('form');
+const noticeMessage = form.querySelector('.notice-message');
+const openModalButtons = container.querySelectorAll('button.open-modal');
+const closeModalButtons = form.querySelectorAll('button.close-modal');
+
+function openDeleteModal() {
+    if (openModalButtons && modal) {
+        for (const button of openModalButtons) {
+            button.addEventListener("click", () => {
+                if (optionMenus) {
+                    for (const folderOptionMenu of optionMenus) {
+                        folderOptionMenu.classList.add('hidden');                      
+                    };
+                };
+
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');              
+                form.action += `/delete-${button.dataset.type}/${button.dataset.id}`;
+
+                if (button.dataset.type === 'folder') {
+                    noticeMessage.textContent = `Are you sure you want to permanently delete the folder '${button.dataset.name}' and all of its contents?`
+                } else {
+                    noticeMessage.textContent = `Are you sure you want to permanently delete the file '${button.dataset.name}'?`
+                };
+
+                setTimeout(() => {
+                    modal.classList.add('opacity-100');
+                });
+            });
+        } ;       
+    };    
+};
+
+const hideModal = (modal) => {
+    modal.classList.remove('flex');
+    modal.classList.remove('opacity-100');
+    modal.classList.add('hidden');
+};
+
+function closeDeleteModal() {
+    if (closeModalButtons && modal) {
+        for (const button of closeModalButtons) {
+            button.addEventListener("click", () => hideModal(modal));
+        }   
+        closeNewFolderFormButton.addEventListener("click", () => hideModal(modal));
+        modal.addEventListener("click", () => hideModal(modal));
+        form.addEventListener("click", (e) => {
+            e.stopImmediatePropagation();
+        });      
+    };    
+};
+
 document.addEventListener("DOMContentLoaded", () => {
 	toggleOptionMenu();
-    openForm();
-    closeForm();   
+    openRenameForm();
+    closeRenameForm();
+    openDeleteModal();
+    closeDeleteModal();   
 });
