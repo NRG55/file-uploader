@@ -1,9 +1,10 @@
 <form   
     action="/storage/<%= parentFolderId %>/rename-<%= type === 'folder' ? `folder/${folder.id}` : `file/${file.id}` %>"
     method="POST"            
-    class="<%= type === 'folder' ? 'rename-folder-form' : 'rename-file-form' %> hidden relative gap-4 items-center w-full h-10 text-white pl-4
+    class="form hidden relative gap-4 items-center w-full h-10 text-white pl-4
            hover:border-gray-700"
-    data-rename-folder-form-id="<%= folder.id %>"
+    data-id="<%= type === 'folder' ? folder.id : file.id %>"
+    data-type="<%= type === 'folder' ? 'folder' : 'file' %>"
     >   
     <div>
         <% if (type === 'folder') { %>
@@ -17,11 +18,11 @@
         name="<%= type === 'folder' ? 'newFolderName' : 'newFileName' %>"       
         value="<%= type === 'folder' ? folder.name : file.name %>"
         data-type="<%= type === 'folder' ? 'folder' : 'file' %>"
-        data-input-id="<%= type === 'folder' ? folder.id : file.id %>"               
+        data-id="<%= type === 'folder' ? folder.id : file.id %>"               
         autocomplete="off"
         spellcheck="false"                
         aria-label="<%= type === 'folder' ?'Rename folder': 'Rename file' %>"        
-        class="px-2 py-1 bg-gray-800
+        class="input px-2 py-1 bg-gray-800
                focus:outline-none 
                focus:ring-1 
              focus:ring-blue-500"          
@@ -35,7 +36,8 @@
     </button>    
     <button         
         type="button"
-        data-id="<%= folder.id %>" 
+        data-id="<%= type === 'folder' ? folder.id : file.id %>"
+        data-type="<%= type === 'folder' ? 'folder' : 'file' %>" 
         aria-label="Close rename folder form" 
         class="close-rename-folder-form-button cursor-pointer p-1 inline-flex items-center justify-center text-gray-400 
                 hover:opacity-70"

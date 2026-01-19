@@ -4,10 +4,10 @@
             <div class="relative flex items-center justify-between mb-2">           
                 <a 
                     href="/storage/<%= folder.id %>" 
-                    class="folder-link relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4 border border-transparent  
+                    class="link relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4 border border-transparent  
                           hover:bg-gray-800"
-                    id="folderLink-<%= folder.id %>"
-                    data-folder-link-id="<%= folder.id %>"
+                    data-type="folder"
+                    data-id="<%= folder.id %>"
                 >
                     <div class="">
                         <img src="/images/folder.svg" class="w-8"/>
@@ -16,7 +16,7 @@
                         <%= folder.name %>
                     </div>                                
                 </a>
-                <%- include("./rename_folder_or_file_form", { type: 'folder', folder: folder }) %>
+                <%- include("./rename_folder_or_file_form", { type: 'folder', folder }) %>
                 <div class="relative flex">
                     <button 
                         class="option-menu-button hover:bg-gray-800" 
@@ -25,16 +25,18 @@
                     >
                         <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
                     </button>  
-                    <%- include("./folder_option_menu", { folderId: folder.id, parentFolderId }) %>
+                    <%- include("./folder_or_file_option_menu", { type: 'folder', folderId: folder.id, parentFolderId }) %>
                 </div>                                            
             </div>             
     <% })} %>
-    <% if (locals.folder) { 
+    <% if (locals.folder) {
         folder.files.forEach((file) => { %>
             <div class="flex items-center justify-between">           
                 <a 
-                    href="/storage/<%= folder.id %>" 
-                    class="relative cursor-pointer flex gap-4 items-center w-full h-10 mb-2 text-white pl-4
+                    href="/storage/<%= folder.id %>"
+                    data-type="file"
+                    data-id="<%= file.id %>" 
+                    class="link relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4
                           hover:bg-gray-800"
                 >
                     <div class="">
@@ -44,7 +46,7 @@
                         <%= file.name %>
                     </div>                                
                 </a>
-                <%- include("./rename_folder_or_file_form", { type: 'file', folder: folder, file: file }) %>
+                <%- include("./rename_folder_or_file_form", { type: 'file', file }) %>
                 <div class="relative flex">
                     <button 
                         class="option-menu-button hover:bg-gray-800" 
@@ -53,7 +55,7 @@
                     >
                         <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
                     </button>  
-                    <%- include("./file_option_menu", { fileId: file.id, parentFolderId }) %>
+                    <%- include("./folder_or_file_option_menu", { type: 'file', fileId: file.id, parentFolderId }) %>
                 </div>  
             </div>  
     <% })} %>     

@@ -1,13 +1,13 @@
 const container = document.getElementById('foldersAndFilesContainer');
 
+const optionMenus = container.querySelectorAll('.option-menu'); // folders and files option menus
 const optionMenuButtons = container.querySelectorAll('.option-menu-button');
-const optionMenus = container.querySelectorAll('.option-menu');
 
-const openFormButtons = container.querySelectorAll('.open-rename-folder-form-button');
+const forms = container.querySelectorAll('.form'); // rename folder or file forms
+const openFormButtons = container.querySelectorAll('.open-form-button');
 const closeFormButtons = container.querySelectorAll('.close-rename-folder-form-button');
-const forms = container.querySelectorAll('.rename-folder-form');
 
-const folderLinks = container.querySelectorAll('.folder-link');
+const links = container.querySelectorAll('.link'); // folders and files links
 
 function toggleOptionMenu() {
     if (optionMenuButtons) {
@@ -22,8 +22,8 @@ function toggleOptionMenu() {
                     };
                 };
                 
-                if (folderLinks) {
-                    for (const folderLink of folderLinks) {                       
+                if (links) {
+                    for (const folderLink of links) {                       
                         folderLink.classList.add('flex');
                         folderLink.classList.remove('hidden');                                             
                     };
@@ -47,13 +47,13 @@ function toggleOptionMenu() {
     };   
 };
 
-function openRenameFolderForm() {
+function openForm() {
     if (openFormButtons) {
         for (const button of openFormButtons) {
             button.addEventListener("click", () => {
-                const currentRenameFolderForm = container.querySelector(`[data-rename-folder-form-id='${button.dataset.id}']`);
-                const renameFolderInput = container.querySelector(`[data-input-id='${button.dataset.id}']`);
-                const currentFolderLink = container.querySelector(`[data-folder-link-id='${button.dataset.id}']`);
+                const form = container.querySelector(`.form[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
+                const input = container.querySelector(`.input[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
+                const link = container.querySelector(`.link[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
 
                 if (optionMenus) {
                     for (const folderOptionMenu of optionMenus) {
@@ -61,33 +61,33 @@ function openRenameFolderForm() {
                     };
                 };
                 
-                currentFolderLink.classList.add("hidden");
-                currentRenameFolderForm.classList.remove("hidden");
-                currentRenameFolderForm.classList.add("flex");
-                renameFolderInput.focus()              
+                link.classList.add("hidden");
+                form.classList.remove("hidden");
+                form.classList.add("flex");
+                input.focus()              
             });           
         };
     };   
 };
 
-function closeRenameFolderForm() {
+function closeForm() {
     if (closeFormButtons) {
         for (const button of closeFormButtons) {
-            const currentFolderLink = document.getElementById(`folderLink-${button.dataset.id}`);
-            const renameFolderInput = container.querySelector(`[data-input-id='${button.dataset.id}']`);
+            const link = container.querySelector(`.link[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
+            const input = container.querySelector(`.input[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
             let folderName = '';
 
-            if (renameFolderInput) {
-                folderName = renameFolderInput.value;
+            if (input) {
+                folderName = input.value;
             }           
 
             button.addEventListener("click", () => {
-                const currentRenameFolderForm = container.querySelector(`[data-rename-folder-form-id='${button.dataset.id}']`);                       
+                const form = container.querySelector(`.form[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);                       
           
-                currentFolderLink.classList.remove("hidden");
-                currentRenameFolderForm.classList.add("hidden");
-                currentRenameFolderForm.classList.remove("flex");
-                renameFolderInput.value = folderName;                           
+                link.classList.remove("hidden");
+                form.classList.add("hidden");
+                form.classList.remove("flex");
+                input.value = folderName;                           
             });           
         };
     };   
@@ -95,6 +95,6 @@ function closeRenameFolderForm() {
 
 document.addEventListener("DOMContentLoaded", () => {
 	toggleOptionMenu();
-    openRenameFolderForm();
-    closeRenameFolderForm();   
+    openForm();
+    closeForm();   
 });

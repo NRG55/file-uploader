@@ -54,7 +54,8 @@ export const getFoldersTree = async (userId) => {
     for (const folder of folders) {
         const currentFolder = foldersMap.get(folder.id);
         const files = await prisma.file.findMany({
-            where: { folderId: folder.id }
+            where: { folderId: folder.id },
+            orderBy: { createdAt: 'asc'}
         });
 
         if (files && files.length > 0) {

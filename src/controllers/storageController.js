@@ -1,4 +1,4 @@
-import { createFolder, renameFolder, deleteFolder, getFolder, getStorageId, createFile } from '../db/queries.js';
+import { createFolder, renameFolder, deleteFolder, renameFile, deleteFile, getFolder, getStorageId, createFile } from '../db/queries.js';
 import { getFolderWithParentFolders, getFoldersTree } from '../services/storageService.js';
 
 const storageGet = async (req, res, next) => {
@@ -12,23 +12,7 @@ const storageGet = async (req, res, next) => {
     };    
 };
 
-//TODO: add file validation
-const fileUploadPost = [   
-    async (req, res, next) => {
-        const userId  = req.user.id;
-        const fileName = req.file.originalname;
-        const parentFolderId  = Number(req.params.parentFolderId);
-
-        try {
-            await createFile(userId, fileName, parentFolderId)
-
-            res.redirect(`/storage/${parentFolderId}`);
-
-        } catch (error) {
-            next(error);
-        };              
-    } 
-];
+// ------------------ FOLDER -------------------
 
 //TODO: add folder name validation
 const createFolderPost = [
@@ -98,7 +82,58 @@ const folderGet = async (req, res, next) => {
     } catch (error) {
         next(error);
     };  
-}
+};
+
+//TODO: add file validation
+const fileUploadPost = [   
+    async (req, res, next) => {
+        const userId  = req.user.id;
+        const fileName = req.file.originalname;
+        const parentFolderId  = Number(req.params.parentFolderId);
+
+        try {
+            await createFile(userId, fileName, parentFolderId)
+
+            res.redirect(`/storage/${parentFolderId}`);
+
+        } catch (error) {
+            next(error);
+        };              
+    } 
+];
+
+// ----------------- FILE ----------------------
+
+const renameFilePost = [
+    async (req, res, next) => {        
+        const fileId = Number(req.params.fileId);
+        const newFileName = req.body.newFileName;
+        const parentFolderId  = Number(req.params.parentFolderId);
+
+        try {
+            await renameFile(fileId, newFileName);
+
+            res.redirect(`/storage/${parentFolderId}`);
+
+        } catch (error) {
+            next(error);
+        };      
+    }
+];
+
+const deleteFileGet = async (req, res, next) => {        
+    const fileId = Number(req.params.fileId);   
+    const parentFolderId  = Number(req.params.parentFolderId);
+
+    try {
+        await deleteFile(fileId);
+
+        res.redirect(`/storage/${parentFolderId}`);
+
+    } catch (error) {
+        next(error);
+    };      
+};
 
 export {
     storageGet,   
@@ -106,5 +141,7 @@ export {
     createFolderPost,
     renameFolderPost,
     deleteFolderGet,
+    renameFilePost,
+    deleteFileGet,
     folderGet 
 };

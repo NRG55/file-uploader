@@ -97,7 +97,7 @@ const getFolder = async (userId, folderId) => {
         include: {
             parentFolder: true,
             childFolders: { orderBy: { createdAt: 'asc' } },
-            files: true
+            files: { orderBy: { createdAt: 'asc' } }
         }       
     });
 
@@ -118,6 +118,27 @@ const createFile = async (userId, fileName, folderId) => {
     return file;  
 };
 
+const renameFile = async (fileId, fileName) => { 
+    const file = await prisma.file.update({
+        where: {
+            id: fileId,
+        },
+        data: {
+            name: fileName,
+        },
+    });
+
+    return file; 
+};
+
+const deleteFile = async (fileId) => {
+    return await prisma.file.delete({
+        where: {
+            id: fileId,
+        }       
+    });   
+};
+
 export {
     createUser, 
     getUserByUsername,
@@ -125,6 +146,8 @@ export {
     createFolder,
     renameFolder,
     deleteFolder,
+    renameFile,
+    deleteFile,
     getStorageId,
     getFolder,   
     createFile
