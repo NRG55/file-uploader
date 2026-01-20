@@ -1,6 +1,8 @@
 import { validationResult, matchedData } from 'express-validator';
 import passport from '../middlewares/passport.js';
 
+// ------------- SIGN UP --------------
+
 const handleSignupValidation = (req, res, next) => {
     const errors = validationResult(req);
 
@@ -60,6 +62,8 @@ const handleLoginValidation = (req, res, next) => {
     next();    
 };
 
+// --------------- LOGIN -------------------
+
 const loginGet = (req, res) => {
     res.render('log_in', { data: {} });
 };
@@ -97,7 +101,7 @@ const logoutGet = (req, res, next) => {
     });
 };
 
-export {
+export {    
     handleSignupValidation,
     signupGet,
     signupPost,

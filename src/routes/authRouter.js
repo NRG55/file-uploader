@@ -1,7 +1,8 @@
 import express from 'express';
 import validateSignup from '../middlewares/validators/validateSignup.js';
 import validateLogin from '../middlewares/validators/validateLogin.js';
-import {
+import checkAuthentication from '../middlewares/checkAuthentication.js';
+import {    
     handleSignupValidation,
     signupGet,
     signupPost,
@@ -12,11 +13,11 @@ import {
 } from '../controllers/authController.js';
 
 const authRouter = express.Router();
-
-authRouter.get('/sign-up', signupGet);
+console.log(checkAuthentication)
+authRouter.get('/sign-up', checkAuthentication, signupGet);
 authRouter.post('/sign-up', validateSignup, handleSignupValidation, signupPost);
 
-authRouter.get('/log-in', loginGet);
+authRouter.get('/log-in', checkAuthentication, loginGet);
 authRouter.post('/log-in', validateLogin, handleLoginValidation, loginPost);
 
 authRouter.get('/log-out', logoutGet);

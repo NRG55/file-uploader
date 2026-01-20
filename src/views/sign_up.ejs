@@ -9,13 +9,17 @@
 <body class="flex flex-col min-h-svh bg-gray-900 px-8">
     <%- include("partials/header") %>    
     <main class="grow">
-        <nav class="flex align-middle mt-4 mb-8">
+        <nav class="flex align-middle py-4 mt-4 mb-16">
             <a href="/" class="text-gray-400 hover:text-white">home</a>
             <span class="text-gray-400 mx-2">|</span> 
             <a href="/auth/sign-up" class="text-cyan-400 hover:text-white">sign up</a>
         </nav>
         <div class="w-full">            
-            <form action="/auth/sign-up" method="POST" class="flex flex-col max-w-100 mx-auto gap-4 p-8 rounded-xs bg-gray-800">
+            <form 
+                action="/auth/sign-up" 
+                method="POST" 
+                class="flex flex-col max-w-100 mx-auto gap-4 p-8 rounded-xs bg-gray-800"
+            >
                 <h1 class="text-3xl sm:text-4xl text-white mb-6">Sign up</h1>
                 <%- include("partials/validation_errors") %>               
                 <input 
@@ -57,10 +61,17 @@
                     class="py-2 px-4 rounded-xs bg-linear-to-r from-cyan-400 to-purple-500 text-white font-bold shadow-lg hover:from-cyan-500 hover:to-purple-600 transition" 
                 >
                     Submit
-                </button>
-                <a href="/auth/log-in" class="flex justify-between text-sm text-gray-400 mt-2">
-                    <p class="hover:text-white transition">Have an account?</p>
-                </a>                        
+                </button>                
+                <p class="text-sm text-gray-400 mt-2">
+                    Have an account?
+                    <a 
+                        href="/auth/log-in" 
+                        class="ml-2 text-cyan-400
+                             hover:text-cyan-500"
+                    >
+                        Log in
+                    </a>
+                </p>                            
             </form>
         </div>
     </main>    
