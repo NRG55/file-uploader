@@ -42,7 +42,8 @@ export const getFoldersTree = async (userId) => {
         foldersMap.set(folder.id, 
             { 
                 id: folder.id, 
-                name: folder.name, 
+                name: folder.name,
+                parentFolderId: folder.parentFolderId, 
                 childFolders: [], 
                 files: [] 
             }

@@ -13,7 +13,7 @@
         <div class="form-wrapper">
             <h1 class="form-title">Log in</h1>
             <%- include('partials/validation_errors') %>
-            <form action="/log-in" method="POST" class="form">            
+            <form action="/auth/log-in" method="POST" class="form">            
                 <label for="username">Username</label>
                 <input 
                     type="text" 
@@ -35,7 +35,7 @@
                     required
                 >
                 <div class="buttons-container">
-                    <a href="/sign-up">Not registered yet?</a>
+                    <a href="/auth/sign-up">Not registered yet?</a>
                     <button type="submit">Log in</button>            
                 </div>           
             </form>

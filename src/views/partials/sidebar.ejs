@@ -3,13 +3,24 @@
     aria-label="Folders navigation"
 >   
     <div id="foldersTree" class="grid overflow-auto pb-8">
-        <% function renderFoldersTree(folders, containerId) {
+        <% function renderFoldersTree(folders, containerId) {            
             folders.forEach((folder) => { %>
-                <div class="container relative flex" data-container-id="<%= folder.id %>">
+                <div 
+                    class="container relative flex
+                            <%= folder.parentFolderId === null 
+                            || folder.parentFolderId === 14 
+                            || (folderWithParentFoldersArray && folderWithParentFoldersArray.some(element => element.id === folder.id || element.id === folder.parentFolderId)) 
+                            ? '' : 'hidden' %>"                            
+                    data-container-id="<%= folder.id %>"
+                >
+               
                     <% if (folder.childFolders.length > 0 || folder.files.length > 0) { %>
                         <button 
-                            class="item absolute cursor-pointer top-1 rotate-90 transition
-                                    hover:opacity-80" 
+                            class="item absolute cursor-pointer top-1 transition
+                                   <%= folder.parentFolderId === null                                 
+                                   || folderWithParentFoldersArray && folderWithParentFoldersArray.some((element) => element.id === folder.id)
+                                   ? 'rotate-90' : '' %> 
+                                   hover:opacity-80" 
                             data-id="<%= folder.id %>"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#eaeae7" class="pointer-events-none" viewBox="0 0 16 16" part="svg">
@@ -21,7 +32,8 @@
                         <a 
                             href="/storage/<%= folder.id %>" 
                             class="folder item text-gray-400 flex items-center whitespace-nowrap
-                                hover:bg-gray-800"                                
+                                hover:bg-gray-800
+                                <%= folder.id === parentFolderId ? 'bg-gray-700' : '' %>"                                
                             data-folder-id="<%= folder.id %>"                                
                         >
                             <svg class="w-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
@@ -37,7 +49,9 @@
                                 <a 
                                     href="/storage/<%= file.id %>" 
                                     class="file item text-gray-400 ml-8 flex whitespace-nowrap
-                                        hover:bg-gray-800"
+                                        hover:bg-gray-800
+                                        <%= folder.parentFolderId === null 
+                                        || folderWithParentFoldersArray && folderWithParentFoldersArray.some(segment => segment.id === file.folderId) ? '' : 'hidden' %>"
                                     data-id="<%= folder.id %>"                                       
                                 >
                                     <svg class="w-5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

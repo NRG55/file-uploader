@@ -6,10 +6,8 @@ import { fileURLToPath } from 'node:url';
 import session from './middlewares/session.js';
 import passport from './middlewares/passport.js';
 import indexRouter from './routes/indexRouter.js';
-import signupRouter from './routes/signupRouter.js';
-import loginRouter from './routes/loginRouter.js';
-import logoutRouter from './routes/logoutRouter.js';
 import storageRouter from './routes/storageRouter.js';
+import authRouter from './routes/authRouter.js';
 import addCurrentUserToLocals from './middlewares/addCurrentUserToLocals.js';
     
 const app = express();
@@ -28,9 +26,7 @@ app.use(passport.session());
 app.use(addCurrentUserToLocals);
 
 app.use('/', indexRouter);
-app.use('/sign-up', signupRouter);
-app.use('/log-in', loginRouter);
-app.use('/log-out', logoutRouter);
+app.use('/auth', authRouter);
 app.use('/storage', storageRouter);
 
 const PORT = process.env.PORT || 3000;

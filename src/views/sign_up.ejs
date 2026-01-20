@@ -12,10 +12,10 @@
         <nav class="flex align-middle mt-4 mb-8">
             <a href="/" class="text-gray-400 hover:text-white">home</a>
             <span class="text-gray-400 mx-2">|</span> 
-            <a href="sign-up" class="text-cyan-400 hover:text-white">sign up</a>
+            <a href="/auth/sign-up" class="text-cyan-400 hover:text-white">sign up</a>
         </nav>
         <div class="w-full">            
-            <form action="/sign-up" method="POST" class="flex flex-col max-w-100 mx-auto gap-4 p-8 rounded-xs bg-gray-800">
+            <form action="/auth/sign-up" method="POST" class="flex flex-col max-w-100 mx-auto gap-4 p-8 rounded-xs bg-gray-800">
                 <h1 class="text-3xl sm:text-4xl text-white mb-6">Sign up</h1>
                 <%- include("partials/validation_errors") %>               
                 <input 
@@ -58,7 +58,7 @@
                 >
                     Submit
                 </button>
-                <a href="/log-in" class="flex justify-between text-sm text-gray-400 mt-2">
+                <a href="/auth/log-in" class="flex justify-between text-sm text-gray-400 mt-2">
                     <p class="hover:text-white transition">Have an account?</p>
                 </a>                        
             </form>
