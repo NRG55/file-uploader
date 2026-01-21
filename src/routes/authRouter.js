@@ -13,7 +13,7 @@ import {
 } from '../controllers/authController.js';
 
 const authRouter = express.Router();
-console.log(checkAuthentication)
+
 authRouter.get('/sign-up', checkAuthentication, signupGet);
 authRouter.post('/sign-up', validateSignup, handleSignupValidation, signupPost);
 

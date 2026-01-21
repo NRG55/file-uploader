@@ -8,7 +8,29 @@
 </head>
 <body class="flex flex-col min-h-svh bg-gray-900 px-8">
     <%- include("partials/header") %>
-    <main class="grow">           
+    <main class="grow grid 
+                 <%= currentUser ? 'grid-rows-[auto_1fr] gap-8' : '' %>">
+        <% if (currentUser) { %>
+            <nav class="flex align-middle mt-4 mb-8">
+                <a href="/" class="text-cyan-400 hover:text-white">home</a>
+                <span class="text-gray-400 mx-2">|</span> 
+                <a href="/storage" class="text-gray-400 hover:text-white">my storage</a>
+            </nav>
+        <% } %>
+        <div class="md:flex mt-30 justify-center">
+            <div class="w-40 md:w-60">
+                <img class="w-full" src="/images/cloud.png"/>
+            </div>
+            <div class="md:w-100">
+                <h1 class="text-gray-300 text-xl mb-12 md:pt-10">Upload, share, and access your files from anywhere in the world. Simple, secure, and built for global connectivity.</h1>
+                <a 
+                    href="/auth/sign-up"
+                    class="inline-block py-2 px-4 rounded-xs bg-cyan-600 text-white font-bold shadow-lg hover:bg-cyan-700 transition"
+                >
+                    Get started
+                </a>
+            </div>
+        </div>        
     </main>    
     <%- include("partials/footer") %>    
 </body>

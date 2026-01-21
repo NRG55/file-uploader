@@ -16,12 +16,11 @@
                       md:grid-cols-[360px_1fr] 
                       md:grid-rows-[auto_1fr]"
     >      
-        <nav class="hidden md:flex col-span-2 align-middle mt-4 mb-8">
+        <nav class="flex col-span-2 align-middle mt-4 mb-8">
             <a href="/" class="text-gray-400 hover:text-white">home</a>
             <span class="text-gray-400 mx-2">|</span> 
             <a href="/storage" class="text-cyan-400 hover:text-white">my storage</a>
-        </nav>
-        <%- include("partials/folders_nav_mobile") %>
+        </nav>        
         <%- include("partials/sidebar") %>
         <div class="grow flex flex-col">            
             <div class="flex mb-6 md:mb-2 md:pl-4">                          
@@ -41,7 +40,7 @@
                     <span class="absolute left-3.5 text-3xl font-light">&#43;</span>
                     New File
                 </button>          
-            </div>        
+            </div>                    
             <%- include("partials/folders_and_files_display") %>
         </div>
         <%- include("partials/new_folder_form") %>

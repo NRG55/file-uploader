@@ -1,4 +1,4 @@
-<nav aria-label="Folders navigation" class="md:hidden mb-8">
+<nav aria-label="Folders navigation" class="flex mb-8 md:hidden ">
     <ul class="">
         <% if (locals.folderWithParentFoldersArray) {
             folderWithParentFoldersArray.forEach((element, index) => { %>
@@ -6,7 +6,7 @@
                     <% if (folderWithParentFoldersArray.length > 1 && index > 0) { %>
                         <span class="text-gray-400 mx-2"><</span>
                     <% } %>
-                    <li class="inline-flex <%= index === folderWithParentFoldersArray.length - 1 ? 'text-cyan-400' : 'text-gray-400' %>
+                    <li class="inline-flex text-sm text-gray-400 <%= index === folderWithParentFoldersArray.length - 1 ? 'underline underline-offset-6' : '' %>
                         hover:text-white"
                     >                       
                         <%= element.name %>                                               

@@ -1,4 +1,5 @@
-<div id="foldersAndFilesContainer" class="flex-1 bg-gray-900 p-4 border-t border-gray-700">    
+<div id="foldersAndFilesContainer" class="flex-1 block bg-gray-900 p-4 border-t border-gray-700">
+    <%- include("./folders_nav_mobile") %>    
     <% if (locals.folder) { 
         folder.childFolders.forEach((folder) => { %>
             <div class="relative flex items-center justify-between mb-2">           
