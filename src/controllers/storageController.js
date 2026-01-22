@@ -84,15 +84,18 @@ const folderGet = async (req, res, next) => {
     };  
 };
 
+// ----------------- FILE ----------------------
+
 //TODO: add file validation
 const fileUploadPost = [   
     async (req, res, next) => {
         const userId  = req.user.id;
-        const fileName = req.file.originalname;
+        const { originalname, size, mimetype } = req.file;
         const parentFolderId  = Number(req.params.parentFolderId);
+        const url = 'test-url.com';
 
         try {
-            await createFile(userId, fileName, parentFolderId)
+            await createFile(userId, parentFolderId, originalname, size, mimetype, url )
 
             res.redirect(`/storage/${parentFolderId}`);
 
@@ -101,8 +104,6 @@ const fileUploadPost = [
         };              
     } 
 ];
-
-// ----------------- FILE ----------------------
 
 const renameFilePost = [
     async (req, res, next) => {        

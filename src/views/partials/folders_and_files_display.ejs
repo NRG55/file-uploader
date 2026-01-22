@@ -33,11 +33,15 @@
     <% if (locals.folder) {
         folder.files.forEach((file) => { %>
             <div class="flex items-center justify-between">           
-                <a 
-                    href="/storage/<%= folder.id %>"
+                <button                    
                     data-type="file"
-                    data-id="<%= file.id %>" 
-                    class="link relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4
+                    data-id="<%= file.id %>"
+                    data-name="<%= file.name %>"
+                    data-size="<%= file.size %>"
+                    data-mimetype="<%= file.mimeType %>"
+                    data-created="<%= file.createdAt %>"
+                    data-url="<%= file.url %>" 
+                    class="open-file-details-modal-button relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4
                           hover:bg-gray-800"
                 >
                     <div class="">
@@ -46,7 +50,7 @@
                     <div class="">
                         <%= file.name %>
                     </div>                                
-                </a>
+                </button>
                 <%- include("./rename_folder_or_file_form", { type: 'file', file }) %>
                 <div class="relative flex">
                     <button 

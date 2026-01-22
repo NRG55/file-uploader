@@ -106,12 +106,15 @@ const getFolder = async (userId, folderId) => {
 
 /* -------------- FILE -------------- */
 
-const createFile = async (userId, fileName, folderId) => {   
+const createFile = async (userId, folderId, fileName, size, mimeType, url) => {   
     const file = await prisma.file.create({
         data: {
             name: fileName,            
             userId: userId,            
-            folderId: folderId,            
+            folderId: folderId,
+            size: size,
+            mimeType: mimeType,
+            url: url
         }
     });
 

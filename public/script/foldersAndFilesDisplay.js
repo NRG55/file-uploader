@@ -13,7 +13,7 @@ function toggleOptionMenu() {
     if (optionMenuButtons) {
         for (const button of optionMenuButtons) {
             button.addEventListener("click", () => {
-                const optionMenu = container.querySelector(`.option-menu[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
+                const clickedOptionMenu = container.querySelector(`.option-menu[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
 
                 if (forms) {
                     for (const form of forms) {                       
@@ -30,12 +30,12 @@ function toggleOptionMenu() {
                 };
 
                 if (optionMenus) {
-                    for (const folderOptionMenu of optionMenus) {
-                        folderOptionMenu !== optionMenu ? folderOptionMenu.classList.add('hidden'): '';                      
+                    for (const optionMenu of optionMenus) {
+                        clickedOptionMenu !== optionMenu ? optionMenu.classList.add('hidden'): '';                      
                     };
                 };                               
 
-                const isActive = optionMenu.classList.toggle("hidden");
+                const isActive = clickedOptionMenu.classList.toggle("hidden");
             
                 if (isActive) {
                     button.setAttribute("aria-expanded", "false");
@@ -56,8 +56,8 @@ function openRenameForm() {
                 const link = container.querySelector(`.link[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
 
                 if (optionMenus) {
-                    for (const folderOptionMenu of optionMenus) {
-                        folderOptionMenu.classList.add('hidden');                      
+                    for (const optionMenu of optionMenus) {
+                        optionMenu.classList.add('hidden');                      
                     };
                 };
                 
@@ -101,13 +101,13 @@ const noticeMessage = form.querySelector('.notice-message');
 const openModalButtons = container.querySelectorAll('button.open-modal');
 const closeModalButtons = form.querySelectorAll('button.close-modal');
 
-function openDeleteModal() {
+function openModalDeleteFileOrFolder() {
     if (openModalButtons && modal) {
         for (const button of openModalButtons) {
             button.addEventListener("click", () => {
                 if (optionMenus) {
-                    for (const folderOptionMenu of optionMenus) {
-                        folderOptionMenu.classList.add('hidden');                      
+                    for (const optionMenu of optionMenus) {
+                        optionMenu.classList.add('hidden');                      
                     };
                 };
 
@@ -129,20 +129,77 @@ function openDeleteModal() {
     };    
 };
 
-const hideModal = (modal) => {
+const hideModalDeleteFileOrFolder = (modal) => {
     modal.classList.remove('flex');
     modal.classList.remove('opacity-100');
     modal.classList.add('hidden');
 };
 
-function closeDeleteModal() {
+function closeModalDeleteFileOrFolder() {
     if (closeModalButtons && modal) {
         for (const button of closeModalButtons) {
-            button.addEventListener("click", () => hideModal(modal));
-        }   
-        closeNewFolderFormButton.addEventListener("click", () => hideModal(modal));
-        modal.addEventListener("click", () => hideModal(modal));
+            button.addEventListener("click", () => hideModalDeleteFileOrFolder(modal));
+        };
+       
+        modal.addEventListener("click", () => hideModalDeleteFileOrFolder(modal));
         form.addEventListener("click", (e) => {
+            e.stopImmediatePropagation();
+        });      
+    };    
+};
+
+// --------------- FILE DETAILS MODAL -----------------
+
+const fileDetailsModal = document.getElementById('fileDetailsModal');
+const fileDetailsForm = fileDetailsModal.querySelector('form');
+const openFileDetailsModalButtons = container.querySelectorAll('.open-file-details-modal-button');
+const closeFileDetailsModalButtons = fileDetailsForm.querySelectorAll('.close-file-details-modal-button');
+const fileName = fileDetailsForm.querySelector('p.name');
+const fileType = fileDetailsForm.querySelector('p.type');
+const fileSize = fileDetailsForm.querySelector('p.size');
+const fileCreated = fileDetailsForm.querySelector('p.created');
+
+function openModalFileDetails() {
+    if (openFileDetailsModalButtons && fileDetailsModal) {
+        for (const button of openFileDetailsModalButtons) {
+            button.addEventListener("click", () => {
+                if (optionMenus) {
+                    for (const optionMenu of optionMenus) {
+                        optionMenu.classList.add('hidden');                      
+                    };
+                };
+
+                fileDetailsModal.classList.remove('hidden');
+                fileDetailsModal.classList.add('flex');              
+                fileDetailsForm.action += `/${button.dataset.type}-details/${button.dataset.id}`;
+
+                fileName.textContent = `Name: ${button.dataset.name}`;
+                fileType.textContent = `Type: ${button.dataset.mimetype}`;
+                fileSize.textContent = `Size: ${button.dataset.size}`;
+                fileSize.textContent = `Created: ${button.dataset.created}`;
+
+                setTimeout(() => {
+                    fileDetailsModal.classList.add('opacity-100');
+                });
+            });
+        } ;       
+    };    
+};
+
+const hideModalFileDetails = (modal) => {
+    modal.classList.remove('flex');
+    modal.classList.remove('opacity-100');
+    modal.classList.add('hidden');
+};
+
+function closeModalFileDetails() {
+    if (closeFileDetailsModalButtons && fileDetailsModal) {
+        for (const button of closeFileDetailsModalButtons) {
+            button.addEventListener("click", () => hideModalFileDetails(fileDetailsModal));
+        };
+       
+        fileDetailsModal.addEventListener("click", () => hideModalFileDetails(fileDetailsModal));
+        fileDetailsForm.addEventListener("click", (e) => {
             e.stopImmediatePropagation();
         });      
     };    
@@ -152,6 +209,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	toggleOptionMenu();
     openRenameForm();
     closeRenameForm();
-    openDeleteModal();
-    closeDeleteModal();   
+    openModalDeleteFileOrFolder();
+    closeModalDeleteFileOrFolder();
+    openModalFileDetails();
+    closeModalFileDetails();   
 });

@@ -1,5 +1,6 @@
 import { validationResult, matchedData } from 'express-validator';
 import passport from '../middlewares/passport.js';
+import { createUser, getUserByUsername } from '../db/queries.js';
 
 // ------------- SIGN UP --------------
 
