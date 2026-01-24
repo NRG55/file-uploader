@@ -79,3 +79,56 @@ export const getFoldersTree = async (userId) => {
 
     return foldersTreeArray;
 };
+
+export const getUniqueFileName = async (userId, folderId, fileName) => {
+    const ext = path.extname(fileName);
+    const baseName = path.basename(fileName, ext);
+
+    let currentFileName = fileName;
+    let counter = 1;
+    let fileExist = true;
+
+    while (fileExist) {
+        const file = await prisma.file.findFirst({
+            where: {
+                name: currentFileName,
+                userId,
+                folderId,
+            }
+        });
+
+        if (file) {
+            currentFileName = `${baseName}(${counter})${ext}`;
+            counter++;           
+        } else {
+            fileExist = false;
+        };                
+    };
+
+    return currentFileName;
+};
+
+export const getUniqueFolderName = async (userId, parentFolderId, folderName) => {
+    let currentFolderName = folderName;
+    let counter = 1;
+    let folderExist = true;
+
+    while (folderExist) {
+        const folder = await prisma.folder.findFirst({
+            where: {
+                name: currentFolderName,
+                userId,
+                parentFolderId
+            }
+        });
+
+        if (folder) {
+            currentFolderName = `${folderName}(${counter})`;
+            counter++;           
+        } else {
+            folderExist = false;
+        };                
+    };
+
+    return currentFolderName;
+};
