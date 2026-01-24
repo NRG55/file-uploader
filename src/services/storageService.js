@@ -1,4 +1,5 @@
-import prisma from '../middlewares/prisma.js';
+import prisma from '../config/prisma.js';
+import path from 'path';
 
 export const getFolderWithParentFolders = async (folderId) => {
     if (!folderId) {

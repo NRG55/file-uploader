@@ -1,4 +1,4 @@
-import prisma from "../middlewares/prisma.js";
+import prisma from "../config/prisma.js";
 import bcrypt from "bcryptjs";
 
 /* -------------- USER -------------- */
@@ -106,7 +106,7 @@ const getFolder = async (userId, folderId) => {
 
 /* -------------- FILE -------------- */
 
-const createFile = async (userId, folderId, fileName, size, mimeType, url) => {   
+const createFile = async (userId, folderId, fileName, size, mimeType, url, publicId) => {   
     const file = await prisma.file.create({
         data: {
             name: fileName,            
@@ -114,7 +114,8 @@ const createFile = async (userId, folderId, fileName, size, mimeType, url) => {
             folderId: folderId,
             size: size,
             mimeType: mimeType,
-            url: url
+            url: url,
+            publicId: publicId
         }
     });
 

@@ -1,5 +1,6 @@
 import { createFolder, renameFolder, deleteFolder, renameFile, deleteFile, getFolder, getStorageId, createFile } from '../db/queries.js';
 import { getFolderWithParentFolders, getFoldersTree } from '../services/storageService.js';
+import cloudinary from '../config/cloudinary.js';
 
 const storageGet = async (req, res, next) => {
     try {
@@ -89,13 +90,47 @@ const folderGet = async (req, res, next) => {
 //TODO: add file validation
 const fileUploadPost = [   
     async (req, res, next) => {
-        const userId  = req.user.id;
-        const { originalname, size, mimetype } = req.file;
+        const userId  = req.user.id;        
         const parentFolderId  = Number(req.params.parentFolderId);
-        const url = 'test-url.com';
+        const file = req.file;
 
+        if (!file) {
+            return res.status(400).render('error', {                
+                errorMessages: ['Upload failed: no file were uploaded.'],
+            });
+        };
+    
         try {
-            await createFile(userId, parentFolderId, originalname, size, mimetype, url )
+            const uploadResult = await new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream(
+                        {
+                            folder: `file-uploader/userId-${userId}`,
+                            resource_type: 'auto',
+                            //TODO: add function to generate a unique file name
+                            public_id: file.originalname,
+                        },
+                        (error, result) => {
+                            if (error) {
+                                console.log(error)
+                                reject(error);
+                            } else {
+                                resolve(result);
+                            };
+                        }
+                );
+        
+                stream.end(file.buffer);
+            });
+
+            await createFile(
+                userId, 
+                parentFolderId, 
+                file.originalname, 
+                file.size, 
+                file.mimetype, 
+                uploadResult.secure_url,
+                uploadResult.public_id 
+            )
 
             res.redirect(`/storage/${parentFolderId}`);
 
