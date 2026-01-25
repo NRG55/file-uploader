@@ -122,6 +122,16 @@ const createFile = async (userId, folderId, fileName, size, mimeType, url, publi
     return file;  
 };
 
+const getFileById = async (fileId) => {
+    const file = await prisma.file.findFirst({
+        where: {
+            id: fileId            
+        }
+    });
+
+    return file;
+};
+
 const renameFile = async (fileId, fileName) => { 
     const file = await prisma.file.update({
         where: {
@@ -154,5 +164,6 @@ export {
     deleteFile,
     getStorageId,
     getFolder,   
-    createFile
+    createFile,
+    getFileById
 };

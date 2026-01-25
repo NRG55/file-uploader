@@ -8,6 +8,7 @@ import {
     deleteFolderGet,
     renameFilePost,
     deleteFileGet,
+    downloadFileGet,
     folderGet
  } from "../controllers/storageController.js";
  
@@ -15,13 +16,15 @@ import {
 const storageRouter = Router();
 
 storageRouter.get('/', storageGet);
-storageRouter.post('/:parentFolderId/upload-file', upload.single('uploadedFile'), fileUploadPost);
+
 storageRouter.post('/:parentFolderId/create-folder', createFolderPost);
 storageRouter.post('/:parentFolderId/rename-folder/:folderId', renameFolderPost);
 storageRouter.get('/:parentFolderId/delete-folder/:folderId', deleteFolderGet);
 
+storageRouter.post('/:parentFolderId/upload-file', upload.single('uploadedFile'), fileUploadPost);
 storageRouter.post('/:parentFolderId/rename-file/:fileId', renameFilePost);
 storageRouter.get('/:parentFolderId/delete-file/:fileId', deleteFileGet);
+storageRouter.get('/:parentFolderId/download-file/:fileId', downloadFileGet);
 
 storageRouter.get('/:folderId', folderGet);
 

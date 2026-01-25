@@ -7,7 +7,31 @@ const forms = container.querySelectorAll('.form'); // rename folder or file form
 const openFormButtons = container.querySelectorAll('.open-form-button');
 const closeFormButtons = container.querySelectorAll('.close-rename-folder-form-button');
 
-const links = container.querySelectorAll('.link'); // folders and files links
+const folderLinks = container.querySelectorAll('.folder-link');
+const fileButtons = container.querySelectorAll('.file-button');
+
+const hideRenameForms = () => {
+    if (forms) {
+        for (const form of forms) {                       
+            form.classList.add('hidden');
+            form.classList.remove('flex');                                             
+        };
+    };
+    
+    if (folderLinks) {
+        for (const link of folderLinks) {                       
+            link.classList.add('flex');
+            link.classList.remove('hidden');                                             
+        };
+    };
+
+    if (fileButtons) {
+        for (const button of fileButtons) {                       
+            button.classList.add('flex');
+            button.classList.remove('hidden');                                             
+        };
+    };
+};
 
 function toggleOptionMenu() {
     if (optionMenuButtons) {
@@ -15,19 +39,7 @@ function toggleOptionMenu() {
             button.addEventListener("click", () => {
                 const clickedOptionMenu = container.querySelector(`.option-menu[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
 
-                if (forms) {
-                    for (const form of forms) {                       
-                        form.classList.add('hidden');
-                        form.classList.remove('flex');                                             
-                    };
-                };
-                
-                if (links) {
-                    for (const folderLink of links) {                       
-                        folderLink.classList.add('flex');
-                        folderLink.classList.remove('hidden');                                             
-                    };
-                };
+                hideRenameForms();
 
                 if (optionMenus) {
                     for (const optionMenu of optionMenus) {
@@ -53,15 +65,23 @@ function openRenameForm() {
             button.addEventListener("click", () => {
                 const form = container.querySelector(`.form[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
                 const input = container.querySelector(`.input[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
-                const link = container.querySelector(`.link[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
+                const folderLink = container.querySelector(`.folder-link[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
+                const fileButton = container.querySelector(`.file-button[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
 
                 if (optionMenus) {
                     for (const optionMenu of optionMenus) {
                         optionMenu.classList.add('hidden');                      
                     };
                 };
+
+                if (fileButton) {
+                    fileButton.classList.add("hidden");
+                };
+
+                if (folderLink) {
+                    folderLink.classList.add("hidden");
+                };               
                 
-                link.classList.add("hidden");
                 form.classList.remove("hidden");
                 form.classList.add("flex");
                 input.focus()              
@@ -73,18 +93,26 @@ function openRenameForm() {
 function closeRenameForm() {
     if (closeFormButtons) {
         for (const button of closeFormButtons) {
-            const link = container.querySelector(`.link[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
+            const folderLink = container.querySelector(`.folder-link[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
+            const fileButton = container.querySelector(`.file-button[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
             const input = container.querySelector(`.input[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
             let folderName = '';
 
             if (input) {
                 folderName = input.value;
-            }           
+            };           
 
             button.addEventListener("click", () => {
                 const form = container.querySelector(`.form[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);                       
           
-                link.classList.remove("hidden");
+                 if (fileButton) {
+                    fileButton.classList.remove("hidden");
+                };
+
+                if (folderLink) {
+                    folderLink.classList.remove("hidden");
+                };
+
                 form.classList.add("hidden");
                 form.classList.remove("flex");
                 input.value = folderName;                           
@@ -158,20 +186,23 @@ const fileName = fileDetailsForm.querySelector('p.name');
 const fileType = fileDetailsForm.querySelector('p.type');
 const fileSize = fileDetailsForm.querySelector('p.size');
 const fileCreated = fileDetailsForm.querySelector('p.created');
+const downloadFileButton = document.getElementById('downloadFileButton');
 
 function openModalFileDetails() {
     if (openFileDetailsModalButtons && fileDetailsModal) {
         for (const button of openFileDetailsModalButtons) {
             button.addEventListener("click", () => {
+                hideRenameForms();
+
                 if (optionMenus) {
                     for (const optionMenu of optionMenus) {
                         optionMenu.classList.add('hidden');                      
                     };
                 };
-
+                
                 fileDetailsModal.classList.remove('hidden');
                 fileDetailsModal.classList.add('flex');              
-                fileDetailsForm.action += `/${button.dataset.type}-details/${button.dataset.id}`;
+                fileDetailsForm.action = `/storage/${button.dataset.folderId}/download-${button.dataset.type}/${button.dataset.id}`;
 
                 fileName.textContent = `Name: ${button.dataset.name}`;
                 fileType.textContent = `Type: ${button.dataset.mimetype}`;
@@ -182,7 +213,11 @@ function openModalFileDetails() {
                     fileDetailsModal.classList.add('opacity-100');
                 });
             });
-        } ;       
+        };
+        
+        if (downloadFileButton) {
+            downloadFileButton.addEventListener('click', () => hideModalFileDetails(fileDetailsModal));
+        };
     };    
 };
 

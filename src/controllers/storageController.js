@@ -1,4 +1,5 @@
 import cloudinary from '../config/cloudinary.js';
+import { Readable } from 'stream';
 import { 
     createFolder, 
     renameFolder, 
@@ -7,7 +8,8 @@ import {
     deleteFile, 
     getFolder, 
     getStorageId, 
-    createFile 
+    createFile,
+    getFileById 
 } from '../db/queries.js';
 import { 
     getFolderWithParentFolders, 
@@ -180,6 +182,36 @@ const deleteFileGet = async (req, res, next) => {
     };      
 };
 
+const downloadFileGet = async (req, res, next) => {        
+    const fileId = Number(req.params.fileId); 
+
+    try {
+        const file = await getFileById(fileId);
+        
+        if(!file) {
+            return res.status(400).render('error', {                
+                    errorMessages: ['Download failed: file does not exist.'],
+                });
+
+        };
+        
+        const response = await fetch(file.url);
+        const stream = Readable.fromWeb(response.body);       
+
+        res.set({
+            'content-type': `${file.mimeType}`,
+            'content-length': `${file.size}`,
+            'content-disposition': `attachment; filename='${file.name}'`
+        });
+
+        stream.pipe(res);
+
+        } catch (error) {
+            console.log(error)
+            next(error);
+        };      
+};
+
 export {
     storageGet,   
     fileUploadPost,
@@ -188,5 +220,6 @@ export {
     deleteFolderGet,
     renameFilePost,
     deleteFileGet,
+    downloadFileGet,
     folderGet 
 };
