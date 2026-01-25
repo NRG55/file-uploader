@@ -173,6 +173,9 @@ const deleteFileGet = async (req, res, next) => {
     const parentFolderId  = Number(req.params.parentFolderId);
 
     try {
+        const file = await getFileById(fileId);
+        //  by default cloudinary the destroy method is defaulted to be applied for the resource_type: 'image' 
+        await cloudinary.uploader.destroy(file.publicId, { resource_type: "raw" }).then(result => console.log(result));
         await deleteFile(fileId);
 
         res.redirect(`/storage/${parentFolderId}`);
@@ -192,9 +195,8 @@ const downloadFileGet = async (req, res, next) => {
             return res.status(400).render('error', {                
                     errorMessages: ['Download failed: file does not exist.'],
                 });
-
         };
-        
+
         const response = await fetch(file.url);
         const stream = Readable.fromWeb(response.body);       
 
