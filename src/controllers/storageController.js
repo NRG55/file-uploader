@@ -33,7 +33,6 @@ const storageGet = async (req, res, next) => {
 
 // ------------------ FOLDER -------------------
 
-//TODO: add folder name validation
 const handleFolderValidation = async (req, res, next) => {
     const errors = validationResult(req);
                 
@@ -123,6 +122,22 @@ const folderGet = async (req, res, next) => {
 // ----------------- FILE ----------------------
 
 //TODO: add file validation
+const handleFileValidation = async (req, res, next) => {
+    const errors = validationResult(req);
+                
+    if (!errors.isEmpty()) {
+        return res
+            .status(400)
+            .render('error', 
+                {
+                    errors: errors.array(),                  
+                }
+            );
+    };
+    
+    next();
+};
+
 const fileUploadPost = async (req, res, next) => {
     const userId  = req.user.id;        
     const parentFolderId  = Number(req.params.parentFolderId);
@@ -146,8 +161,11 @@ const fileUploadPost = async (req, res, next) => {
                     },
                     (error, result) => {
                         if (error) {
-                            console.log(error)
-                            reject(error);
+                            console.log(error)                            
+                            return res.status(400).render('error', {                
+                                errors: [{ msg: error.message }],
+                            });
+                            
                         } else {
                             resolve(result);
                         };
@@ -246,5 +264,6 @@ export {
     deleteFileGet,
     downloadFileGet,
     folderGet,
-    handleFolderValidation 
+    handleFolderValidation,
+    handleFileValidation 
 };
