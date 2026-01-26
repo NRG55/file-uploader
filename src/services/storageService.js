@@ -29,7 +29,7 @@ export const getFolderWithParentFolders = async (folderId) => {
     };
 
     return foldersArray;
-}
+};
 
 export const getFoldersTree = async (userId) => {
     const folders = await prisma.folder.findMany({
@@ -78,6 +78,48 @@ export const getFoldersTree = async (userId) => {
     };  
 
     return foldersTreeArray;
+};
+
+export const getChildFoldersIds = async (userId, folderId) => {   
+    const folders = await prisma.folder.findMany({
+        where: { userId }       
+    });
+
+    const foldersMap = new Map();
+
+    for (const folder of folders) {
+        foldersMap.set(folder.id, { id: folder.id, childFolders: [] });
+    };  
+
+    for (const folder of folders) {
+        const currentFolder = foldersMap.get(folder.id);              
+
+        if (folder.parentFolderId) {
+            const parentFolder = foldersMap.get(folder.parentFolderId);
+
+            if (parentFolder) {
+                parentFolder.childFolders.push(currentFolder);
+            };
+        }; 
+    };
+   
+    const parentFolder = foldersMap.get(folderId);
+    const childFoldersArray = parentFolder.childFolders;
+    const childFoldersIds = [];
+    // recursive
+    function getChildFolderIds (foldersArray) {
+        for (const folder of foldersArray) {
+            childFoldersIds.push(folder.id);
+
+            if (folder.childFolders.length > 0) {
+                getChildFolderIds(folder.childFolders);
+            }
+        }        
+    };
+
+    getChildFolderIds(childFoldersArray);
+    
+    return childFoldersIds;
 };
 
 export const getUniqueFileName = async (userId, folderId, fileName) => {

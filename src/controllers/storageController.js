@@ -1,4 +1,5 @@
 import cloudinary from '../config/cloudinary.js';
+import { deleteFolderFromCloudinary } from '../services/cloudinaryService.js';
 import { Readable } from 'stream';
 import { 
     createFolder, 
@@ -64,11 +65,13 @@ const renameFolderPost =  async (req, res, next) => {
     };      
 };
 
-const deleteFolderGet = async (req, res, next) => {        
+const deleteFolderGet = async (req, res, next) => {
+    const userId = req.user.id;        
     const folderId = Number(req.params.folderId);   
     const parentFolderId  = Number(req.params.parentFolderId);
-
+ 
     try {
+        await deleteFolderFromCloudinary(userId, folderId);
         await deleteFolder(folderId);
 
         res.redirect(`/storage/${parentFolderId}`);
@@ -119,7 +122,7 @@ const fileUploadPost = async (req, res, next) => {
         const uploadResult = await new Promise((resolve, reject) => {
             const stream = cloudinary.uploader.upload_stream(
                     {
-                        folder: `file-uploader/folder-${userId}`,
+                        folder: `file-uploader/user-${userId}/folder-${parentFolderId}`,
                         resource_type: 'auto',                            
                         public_id: uniqueFileName,
                     },
@@ -176,6 +179,7 @@ const deleteFileGet = async (req, res, next) => {
         const file = await getFileById(fileId);
         //  by default cloudinary the destroy method is defaulted to be applied for the resource_type: 'image' 
         await cloudinary.uploader.destroy(file.publicId, { resource_type: "raw" }).then(result => console.log(result));
+        await cloudinary.uploader.destroy(file.publicId).then(result => console.log(result));
         await deleteFile(fileId);
 
         res.redirect(`/storage/${parentFolderId}`);
