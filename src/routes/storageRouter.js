@@ -1,5 +1,6 @@
 import { Router } from "express";
 import upload from "../config/multer.js";
+import validateFolder from "../middlewares/validators/validateFolder.js";
 import {     
     storageGet,
     fileUploadPost,
@@ -9,7 +10,8 @@ import {
     renameFilePost,
     deleteFileGet,
     downloadFileGet,
-    folderGet
+    folderGet,
+    handleFolderValidation
  } from "../controllers/storageController.js";
  
 
@@ -17,8 +19,8 @@ const storageRouter = Router();
 
 storageRouter.get('/', storageGet);
 
-storageRouter.post('/:parentFolderId/create-folder', createFolderPost);
-storageRouter.post('/:parentFolderId/rename-folder/:folderId', renameFolderPost);
+storageRouter.post('/:parentFolderId/create-folder', validateFolder, handleFolderValidation, createFolderPost);
+storageRouter.post('/:parentFolderId/rename-folder/:folderId', validateFolder, handleFolderValidation, renameFolderPost);
 storageRouter.get('/:parentFolderId/delete-folder/:folderId', deleteFolderGet);
 
 storageRouter.post('/:parentFolderId/upload-file', upload.single('uploadedFile'), fileUploadPost);

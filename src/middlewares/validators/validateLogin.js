@@ -1,5 +1,4 @@
 import { body } from 'express-validator';
-import { validationResult } from 'express-validator';
 
 const emptyError = 'cannot be empty.';
 const lengthError = 'must be between 1 and 32 characters.';

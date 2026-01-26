@@ -1,6 +1,7 @@
 import cloudinary from '../config/cloudinary.js';
 import { deleteFolderFromCloudinary } from '../services/cloudinaryService.js';
 import { Readable } from 'stream';
+import { validationResult, matchedData } from 'express-validator';
 import { 
     createFolder, 
     renameFolder, 
@@ -33,6 +34,23 @@ const storageGet = async (req, res, next) => {
 // ------------------ FOLDER -------------------
 
 //TODO: add folder name validation
+const handleFolderValidation = async (req, res, next) => {
+    const errors = validationResult(req);
+                
+    if (!errors.isEmpty()) {
+        return res
+            .status(400)
+            .render('error', 
+                {
+                    errors: errors.array(),
+                    data: req.body
+                }
+            );
+    };
+    
+    next();
+};
+
 const createFolderPost = async (req, res, next) => {
     const userId  = req.user.id;
     const newFolderName = req.body.newFolderName;
@@ -112,7 +130,7 @@ const fileUploadPost = async (req, res, next) => {
 
     if (!file) {
         return res.status(400).render('error', {                
-            errorMessages: ['Upload failed: no file were uploaded.'],
+            errors: [{ msg: 'Upload failed: no file were uploaded.' }],
         });
     };
 
@@ -227,5 +245,6 @@ export {
     renameFilePost,
     deleteFileGet,
     downloadFileGet,
-    folderGet 
+    folderGet,
+    handleFolderValidation 
 };
