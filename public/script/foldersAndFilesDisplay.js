@@ -4,7 +4,7 @@ const optionMenus = container.querySelectorAll('.option-menu'); // folders and f
 const optionMenuButtons = container.querySelectorAll('.option-menu-button');
 
 const forms = container.querySelectorAll('.form'); // rename folder or file forms
-const openFormButtons = container.querySelectorAll('.open-form-button');
+const openRenameFormButtons = container.querySelectorAll('.open-rename-form-button');
 const closeFormButtons = container.querySelectorAll('.close-rename-folder-form-button');
 
 const folderLinks = container.querySelectorAll('.folder-link');
@@ -60,8 +60,8 @@ function toggleOptionMenu() {
 };
 
 function openRenameForm() {
-    if (openFormButtons) {
-        for (const button of openFormButtons) {
+    if (openRenameFormButtons) {
+        for (const button of openRenameFormButtons) {
             button.addEventListener("click", () => {
                 const form = container.querySelector(`.form[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
                 const input = container.querySelector(`.input[data-type='${button.dataset.type}'][data-id='${button.dataset.id}']`);
@@ -237,6 +237,52 @@ function closeModalFileDetails() {
         fileDetailsForm.addEventListener("click", (e) => {
             e.stopImmediatePropagation();
         });      
+    };    
+};
+
+// --------------- SHARE FOLDER MODAL -----------------
+
+const shareFolderModal = document.getElementById('shareFolderModal');
+const openShareModalButtons = container.querySelectorAll('.open-share-modal-button');
+const shareDurationDivs = shareFolderModal.querySelectorAll('.share-duration-div')
+const radioInputs = shareFolderModal.querySelectorAll('input[type="radio"]')
+
+function openModalFileDetails() {
+    if (openShareModalButtons && shareFolderModal) {
+        for (const button of openShareModalButtons) {
+            button.addEventListener("click", () => {
+                hideRenameForms();
+
+                if (optionMenus) {
+                    for (const optionMenu of optionMenus) {
+                        optionMenu.classList.add('hidden');                      
+                    };
+                };
+
+                if (shareDurationDivs) {
+                    for (const div of shareDurationDivs) {
+                        const input = div.querySelector('input');
+
+                        if (input.checked) {
+                            div.classList.add('bg-gray-400', 'text-black', 'hover:bg-gray-500');
+                            div.classList.remove('text-gray-300');
+                        } else {
+                            div.classList.remove('bg-gray-400', 'text-black', 'hover:bg-gray-500');
+                            div.classList.add('text-gray-300');
+                        }
+                        
+                        input.checked === true ? div.classList.add('bg-gray-400', 'text-black') : div.classList.remove('bg-gray-400', 'text-black');                     
+                    };
+                };              
+                
+                shareFolderModal.classList.remove('hidden');
+                shareFolderModal.classList.add('flex');           
+
+                setTimeout(() => {
+                    shareFolderModal.classList.add('opacity-100');
+                });
+            });
+        };       
     };    
 };
 

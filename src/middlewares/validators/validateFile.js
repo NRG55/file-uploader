@@ -18,7 +18,9 @@ const allowedTypes = [
 const validateFile = [
     body('uploadedFile')        
         .custom(async (value, { req }) => {
-            if (invalidCharacters.test(value)) {
+            const fileName = req.file.originalname;
+
+            if (invalidCharacters.test(fileName)) {
                 throw new Error(`File name cannot contain any of the following characters: < > : " / \\ | ? *`);
             };            
 
@@ -33,7 +35,7 @@ const validateFile = [
             };
 
             if (req.file.size > 100 * 1024 * 1024) { // 100Mb
-                throw new Error('File size exceeds 1MB limit');
+                throw new Error('File size exceeds 100MB limit');
             };
 
             return true;

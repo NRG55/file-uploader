@@ -119,9 +119,20 @@ const folderGet = async (req, res, next) => {
     };  
 };
 
+const shareFolderPost = async (req, res, next) => {
+    const userId = req.user.id;
+    const folderId = Number(req.params.folderId);
+    
+    try {
+        
+
+    } catch (error) {
+        next(error);
+    };  
+};
+
 // ----------------- FILE ----------------------
 
-//TODO: add file validation
 const handleFileValidation = async (req, res, next) => {
     const errors = validationResult(req);
                 
@@ -165,7 +176,7 @@ const fileUploadPost = async (req, res, next) => {
                             return res.status(400).render('error', {                
                                 errors: [{ msg: error.message }],
                             });
-                            
+
                         } else {
                             resolve(result);
                         };
@@ -233,7 +244,7 @@ const downloadFileGet = async (req, res, next) => {
         
         if(!file) {
             return res.status(400).render('error', {                
-                    errorMessages: ['Download failed: file does not exist.'],
+                    errors: [{ msg: 'Download failed: file does not exist.' }],
                 });
         };
 
@@ -260,6 +271,7 @@ export {
     createFolderPost,
     renameFolderPost,
     deleteFolderGet,
+    shareFolderPost,
     renameFilePost,
     deleteFileGet,
     downloadFileGet,
