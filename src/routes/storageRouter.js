@@ -8,7 +8,7 @@ import {
     createFolderPost,
     renameFolderPost,
     deleteFolderGet,
-    shareFolderPost,
+    createSharedLinkPost,
     renameFilePost,
     deleteFileGet,
     downloadFileGet,
@@ -23,7 +23,7 @@ const storageRouter = Router();
 storageRouter.get('/', storageGet);
 
 // --------------- FILE ---------------
-
+storageRouter.post('/share', createSharedLinkPost);
 storageRouter.post('/:parentFolderId/upload-file', upload.single('uploadedFile'), validateFile, handleFileValidation, fileUploadPost);
 storageRouter.post('/:parentFolderId/rename-file/:fileId', renameFilePost);
 storageRouter.get('/:parentFolderId/delete-file/:fileId', deleteFileGet);
@@ -34,8 +34,6 @@ storageRouter.get('/:parentFolderId/download-file/:fileId', downloadFileGet);
 storageRouter.post('/:parentFolderId/create-folder', validateFolder, handleFolderValidation, createFolderPost);
 storageRouter.post('/:parentFolderId/rename-folder/:folderId', validateFolder, handleFolderValidation, renameFolderPost);
 storageRouter.get('/:parentFolderId/delete-folder/:folderId', deleteFolderGet);
-storageRouter.post('/:parentFolderId/share-folder/:folderId', shareFolderPost);
-
 
 
 storageRouter.get('/:folderId', folderGet);

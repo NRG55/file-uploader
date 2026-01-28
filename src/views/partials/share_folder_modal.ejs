@@ -24,90 +24,103 @@
             Generate a public link to share the folder?
         </p>       
         <div class="flex gap-2">
-            <div class="share-duration-div rounded-xs shadow-lg border border-gray-400 transition
-                      hover:border-gray-500"
+            <div class="share-duration-div"
             >
                 <input 
                     type="radio" 
                     id="oneHour" 
                     name="shareDuration" 
                     value="1"
-                    class="hidden" 
+                    class="hidden peer" 
                     checked
                 >
                 <label 
                     for="oneHour"
-                    class="block py-1 px-4"
+                    class="share-duration-label block cursor-pointer py-1 px-4 text-gray-300 rounded-xs shadow-lg border border-gray-400 transition
+                         hover:border-gray-500
+                         peer-checked:bg-gray-400
+                         peer-checked:text-black
+                         peer-checked:hover:bg-gray-500"
                 >
                     1 hour
                 </label>
             </div>                
-            <div class="share-duration-div rounded-xs shadow-lg border border-gray-400 transition
-                        hover:border-gray-500"
+            <div class="share-duration-div"
             >
                 <input 
                     type="radio" 
                     id="twelveHours" 
                     name="shareDuration" 
                     value="12"
-                    class="hidden"
+                    class="hidden peer"
                 >
                 <label 
                     for="twelveHours"
-                    class="block py-1 px-4"
+                    class="share-duration-label block cursor-pointer py-1 px-4 text-gray-300 rounded-xs shadow-lg border border-gray-400 transition
+                         hover:border-gray-500
+                         peer-checked:bg-gray-400
+                         peer-checked:text-black
+                         peer-checked:hover:bg-gray-500"
                 >
                     12 hours
                 </label>
             </div>                
-            <div class="share-duration-div rounded-xs shadow-lg border border-gray-400 transition
-                        hover:border-gray-500"
+            <div class="share-duration-div"
             >
                 <input 
                     type="radio" 
                     id="oneDay" 
                     name="shareDuration" 
                     value="24"
-                    class="hidden"
+                    class="hidden peer"
                 >
                 <label 
                     for="oneDay"
-                    class="block py-1 px-4"
+                    class="share-duration-label block cursor-pointer py-1 px-4 text-gray-300 rounded-xs shadow-lg border border-gray-400 transition
+                         hover:border-gray-500
+                         peer-checked:bg-gray-400
+                         peer-checked:text-black
+                         peer-checked:hover:bg-gray-500"
                 >
                    1 day
                 </label>
             </div>
-             <div class="share-duration-div rounded-xs shadow-lg border border-gray-400 transition
-                         hover:border-gray-500"
+             <div class="share-duration-div"
              >
                 <input 
                     type="radio" 
                     id="oneWeek" 
                     name="shareDuration" 
                     value="168"
-                    class="hidden"
+                    class="hidden peer"
                 >
                 <label 
                     for="oneWeek"
-                    class="block py-1 px-4"
+                    class="share-duration-label block cursor-pointer py-1 px-4 text-gray-300 rounded-xs shadow-lg border border-gray-400 transition
+                         hover:border-gray-500
+                         peer-checked:bg-gray-400
+                         peer-checked:text-black
+                         peer-checked:hover:bg-gray-500"
                 >
                     1 week
                 </label>
             </div>
         </div>     
         <div class="">
-            <input class="shareable-link-input">
+            <input class="shared-link-input w-full text-gray-300">
         </div>        
         <div class="flex justify-end gap-4">           
             <button 
                 type="button" 
-                class="close-file-details-modal-button py-1 px-4 rounded-xs text-white shadow-lg border border-gray-400 transition
+                class="close-file-details-modal-button cursor-pointer py-1 px-4 rounded-xs text-white shadow-lg border border-gray-400 transition
                      hover:border-gray-500"
             >
                 Close
             </button>                      
             <button
+                type="button"
                 id="generateLinkButton" 
-                class="py-1 px-4 rounded-xs text-white shadow-lg border border-cyan-700 bg-cyan-700 transition
+                class="cursor-pointer py-1 px-4 rounded-xs text-white shadow-lg border border-cyan-700 bg-cyan-700 transition
                      hover:bg-cyan-800 "
              >
                 Generate

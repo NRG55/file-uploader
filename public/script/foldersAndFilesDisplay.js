@@ -244,36 +244,20 @@ function closeModalFileDetails() {
 
 const shareFolderModal = document.getElementById('shareFolderModal');
 const openShareModalButtons = container.querySelectorAll('.open-share-modal-button');
-const shareDurationDivs = shareFolderModal.querySelectorAll('.share-duration-div')
-const radioInputs = shareFolderModal.querySelectorAll('input[type="radio"]')
+const generateLinkButton = document.getElementById('generateLinkButton');
 
-function openModalFileDetails() {
+function openShareFolderModal() {
     if (openShareModalButtons && shareFolderModal) {
         for (const button of openShareModalButtons) {
-            button.addEventListener("click", () => {
-                hideRenameForms();
+            const folderId = Number(button.dataset.id);
+console.log( typeof folderId)
+            button.addEventListener("click", () => {               
 
                 if (optionMenus) {
                     for (const optionMenu of optionMenus) {
                         optionMenu.classList.add('hidden');                      
                     };
-                };
-
-                if (shareDurationDivs) {
-                    for (const div of shareDurationDivs) {
-                        const input = div.querySelector('input');
-
-                        if (input.checked) {
-                            div.classList.add('bg-gray-400', 'text-black', 'hover:bg-gray-500');
-                            div.classList.remove('text-gray-300');
-                        } else {
-                            div.classList.remove('bg-gray-400', 'text-black', 'hover:bg-gray-500');
-                            div.classList.add('text-gray-300');
-                        }
-                        
-                        input.checked === true ? div.classList.add('bg-gray-400', 'text-black') : div.classList.remove('bg-gray-400', 'text-black');                     
-                    };
-                };              
+                };                           
                 
                 shareFolderModal.classList.remove('hidden');
                 shareFolderModal.classList.add('flex');           
@@ -281,10 +265,36 @@ function openModalFileDetails() {
                 setTimeout(() => {
                     shareFolderModal.classList.add('opacity-100');
                 });
+
+                generateLinkButton.addEventListener('click', () => {
+                    showGeneratedLinkInModal(folderId, shareFolderModal);
+                })
             });
         };       
     };    
 };
+
+const showGeneratedLinkInModal = (folderId, modal) => {    
+    const duration = modal.querySelector('input[type="radio"]:checked').value;
+    const sharedLinkInput = modal.querySelector('.shared-link-input');
+
+    fetch('/storage/share', {
+            method: 'POST',           
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ folderId, duration })
+        })
+    .then(response => {
+            if(!response.ok) {
+                throw new Error('POST /storge/share: response is not ok');
+            };
+
+            return response.json();
+        })
+    .then(data => {
+            console.log(data)
+            sharedLinkInput.value = data.url;            
+        });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
 	toggleOptionMenu();
@@ -293,5 +303,6 @@ document.addEventListener("DOMContentLoaded", () => {
     openModalDeleteFileOrFolder();
     closeModalDeleteFileOrFolder();
     openModalFileDetails();
-    closeModalFileDetails();   
+    closeModalFileDetails();
+    openShareFolderModal();   
 });

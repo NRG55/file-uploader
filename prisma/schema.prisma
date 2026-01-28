@@ -21,24 +21,26 @@ model Session {
 }
 
 model User {
-    id        Int      @id @default(autoincrement())
-    username  String   @unique
-    password  String
-    createdAt DateTime @default(now())
-    folders   Folder[]
-    files     File[]
+    id            Int             @id @default(autoincrement())
+    username      String          @unique
+    password      String
+    createdAt     DateTime        @default(now())
+    folders       Folder[]
+    files         File[]
+    sharedLinks   SharedLink[]
 }
 
 model Folder {
-    id        Int         @id @default(autoincrement())
-    name      String   
-    createdAt DateTime    @default(now())
-    user      User        @relation(fields: [userId], references: [id])
-    userId    Int
-    files     File[]
-    parentFolder Folder?  @relation("ParentToChildFolders", fields: [parentFolderId], references: [id], onDelete: Cascade)
+    id             Int          @id @default(autoincrement())
+    name           String   
+    createdAt      DateTime     @default(now())
+    user           User         @relation(fields: [userId], references: [id])
+    userId         Int
+    files          File[]
+    parentFolder   Folder?      @relation("ParentToChildFolders", fields: [parentFolderId], references: [id], onDelete: Cascade)
     parentFolderId Int?
-    childFolders Folder[] @relation("ParentToChildFolders")
+    childFolders   Folder[]     @relation("ParentToChildFolders")
+    sharedLinks    SharedLink[]
 }
 
 model File {
@@ -53,4 +55,14 @@ model File {
     userId    Int
     folder    Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade)
     folderId  Int?
+}
+
+model SharedLink {
+    id        String   @id @default(uuid())
+    userId    Int
+    folderId  Int
+    expiresAt DateTime
+    createdAt DateTime @default(now())
+    user      User     @relation(fields: [userId], references: [id])
+    folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
 }

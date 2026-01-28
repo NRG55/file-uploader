@@ -104,6 +104,19 @@ const getFolder = async (userId, folderId) => {
     return folder;
 }
 
+const createSharedLink = async (userId, folderId, expiresAt) => { 
+    const sharedLink = await prisma.sharedLink.create({
+        data: {
+            userId,
+            folderId,
+            expiresAt
+        }
+    });
+
+    return sharedLink;  
+};
+
+
 /* -------------- FILE -------------- */
 
 const createFile = async (userId, folderId, fileName, size, mimeType, url, publicId) => {   
@@ -165,5 +178,6 @@ export {
     getStorageId,
     getFolder,   
     createFile,
-    getFileById
+    getFileById,
+    createSharedLink
 };

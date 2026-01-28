@@ -11,7 +11,8 @@ import {
     getFolder, 
     getStorageId, 
     createFile,
-    getFileById 
+    getFileById,
+    createSharedLink 
 } from '../db/queries.js';
 import { 
     getFolderWithParentFolders, 
@@ -119,12 +120,18 @@ const folderGet = async (req, res, next) => {
     };  
 };
 
-const shareFolderPost = async (req, res, next) => {
-    const userId = req.user.id;
-    const folderId = Number(req.params.folderId);
-    
+const createSharedLinkPost = async (req, res, next) => {   
     try {
+        const userId = req.user.id;
+        const folderId = Number(req.body.folderId);
+        const hours = Number(req.body.duration);
+        const hoursInMilliseconds = hours * 60 * 60 * 1000
+        const expiresAt = new Date(Date.now() + hoursInMilliseconds);     
+        console.log(expiresAt)
+        const sharedLink = await createSharedLink(userId, folderId, expiresAt);
+        const sharedLinkUrl = `${req.protocol}://${req.get('host')}/share/${sharedLink.id}`;
         
+        res.status(200).json({ url: sharedLinkUrl });
 
     } catch (error) {
         next(error);
@@ -271,7 +278,7 @@ export {
     createFolderPost,
     renameFolderPost,
     deleteFolderGet,
-    shareFolderPost,
+    createSharedLinkPost,
     renameFilePost,
     deleteFileGet,
     downloadFileGet,
