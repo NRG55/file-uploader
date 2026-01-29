@@ -243,14 +243,16 @@ function closeModalFileDetails() {
 // --------------- SHARE FOLDER MODAL -----------------
 
 const shareFolderModal = document.getElementById('shareFolderModal');
+const shareFolderForm = shareFolderModal.querySelector('.share-folder-form');
 const openShareModalButtons = container.querySelectorAll('.open-share-modal-button');
 const generateLinkButton = document.getElementById('generateLinkButton');
+const closeShareFolderModalButtons = shareFolderModal.querySelectorAll('.close-share-folder-modal-button');
 
 function openShareFolderModal() {
     if (openShareModalButtons && shareFolderModal) {
         for (const button of openShareModalButtons) {
             const folderId = Number(button.dataset.id);
-console.log( typeof folderId)
+
             button.addEventListener("click", () => {               
 
                 if (optionMenus) {
@@ -266,17 +268,20 @@ console.log( typeof folderId)
                     shareFolderModal.classList.add('opacity-100');
                 });
 
-                generateLinkButton.addEventListener('click', () => {
-                    showGeneratedLinkInModal(folderId, shareFolderModal);
+                generateLinkButton.addEventListener('click', (event) => {
+                    showGeneratedLinkInModal(event, folderId, shareFolderModal);
                 })
             });
         };       
     };    
 };
 
-const showGeneratedLinkInModal = (folderId, modal) => {    
+const showGeneratedLinkInModal = (event, folderId, modal) => {
+    const button = event.target; 
     const duration = modal.querySelector('input[type="radio"]:checked').value;
-    const sharedLinkInput = modal.querySelector('.shared-link-input');
+    const sharedLinkContainer = modal.querySelector('.shared-link-container');
+
+    button.disabled = true;
 
     fetch('/storage/share', {
             method: 'POST',           
@@ -290,11 +295,70 @@ const showGeneratedLinkInModal = (folderId, modal) => {
 
             return response.json();
         })
-    .then(data => {
-            console.log(data)
-            sharedLinkInput.value = data.url;            
+    .then(data => {            
+            sharedLinkContainer.innerHTML = sharedLinkContent(data.url);
+            button.disabled = false;            
         });
-}
+};
+
+const copyToClipboard = () => {
+    const input = document.getElementById("sharedLinkInput");
+    const button = document.getElementById("copyLinkButton");
+
+    input.select();    
+    navigator.clipboard.writeText(input.value);
+    button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                <path d="M9.993 19.421 3.286 12.58l1.428-1.401 5.293 5.4 9.286-9.286 1.414 1.414L9.993 19.421z"/>
+            </svg>
+        `;
+};
+
+const sharedLinkContent = (url) => {
+    return `                    
+            <div class="w-full flex justify-between items-center my-2 border rounded-xs border-gray-400 bg-gray-700 gap-1 overflow-hidden">
+                <input
+                    id="sharedLinkInput" 
+                    class="w-full pl-2 py-1 bg-gray-700 border-transparent text-sm text-cyan-500 type="text" value="${url}" disabled
+                >                
+                <button
+                    id="copyLinkButton" 
+                    type="button" 
+                    class="cursor-pointer bg-gray-400 flex size-8 justify-center items-center border border-gray-400 transition
+                           hover:bg-gray-500
+                           hover:border-gray-500"
+                    onclick="copyToClipboard()"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+                    </svg>
+                </button>
+            </div>           
+        
+            `
+};
+
+const hideModalShareFolder = (modal) => {
+    const sharedLinkContainer = modal.querySelector('.shared-link-container');
+
+    sharedLinkContainer.innerHTML = '';
+    modal.classList.remove('flex');
+    modal.classList.remove('opacity-100');
+    modal.classList.add('hidden');
+};
+
+function closeModalShareFolder() {
+    if (closeShareFolderModalButtons && shareFolderModal) {
+        for (const button of closeShareFolderModalButtons) {
+            button.addEventListener("click", () => hideModalShareFolder(shareFolderModal));
+        };
+       
+        shareFolderModal.addEventListener("click", () => hideModalShareFolder(shareFolderModal));
+        shareFolderForm.addEventListener("click", (e) => {
+            e.stopImmediatePropagation();
+        });      
+    };    
+};
 
 document.addEventListener("DOMContentLoaded", () => {
 	toggleOptionMenu();
@@ -304,5 +368,6 @@ document.addEventListener("DOMContentLoaded", () => {
     closeModalDeleteFileOrFolder();
     openModalFileDetails();
     closeModalFileDetails();
-    openShareFolderModal();   
+    openShareFolderModal();
+    closeModalShareFolder();   
 });

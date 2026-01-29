@@ -127,7 +127,7 @@ const createSharedLinkPost = async (req, res, next) => {
         const hours = Number(req.body.duration);
         const hoursInMilliseconds = hours * 60 * 60 * 1000
         const expiresAt = new Date(Date.now() + hoursInMilliseconds);     
-        console.log(expiresAt)
+        
         const sharedLink = await createSharedLink(userId, folderId, expiresAt);
         const sharedLinkUrl = `${req.protocol}://${req.get('host')}/share/${sharedLink.id}`;
         
