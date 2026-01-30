@@ -100,15 +100,16 @@ const deleteFolderGet = async (req, res, next) => {
 };
 
 const folderGet = async (req, res, next) => {
-    const userId = req.user.id;
-    const folderId = Number(req.params.folderId);
-    const folderWithParentFoldersArray = await getFolderWithParentFolders(folderId); // [{id: 1, name: 'folder name'}, ...]
-    const foldersTreeArray = await getFoldersTree(userId); // [{id: 1, name: 'folder name', childFolders: []}, ...]
-
     try {
+        const userId = req.user.id;
+        const folderId = Number(req.params.folderId);
+        const folderWithParentFoldersArray = await getFolderWithParentFolders(folderId); // [{id: 1, name: 'folder name'}, ...]
+        const foldersTreeArray = await getFoldersTree(userId); // [{id: 1, name: 'folder name', childFolders: []}, ...]
+        const rootFolderId = foldersTreeArray[0].id;   
         const folder = await getFolder(userId, folderId);
 
         res.render('storage', { 
+                                rootFolderId,
                                 folder,
                                 parentFolderId: folderId, 
                                 folderWithParentFoldersArray, 
@@ -243,10 +244,9 @@ const deleteFileGet = async (req, res, next) => {
     };      
 };
 
-const downloadFileGet = async (req, res, next) => {        
-    const fileId = Number(req.params.fileId); 
-
+const downloadFileGet = async (req, res, next) => {
     try {
+        const fileId = Number(req.params.fileId);
         const file = await getFileById(fileId);
         
         if(!file) {
@@ -256,7 +256,7 @@ const downloadFileGet = async (req, res, next) => {
         };
 
         const response = await fetch(file.url);
-        const stream = Readable.fromWeb(response.body);       
+        const readStream = Readable.fromWeb(response.body);       
 
         res.set({
             'content-type': `${file.mimeType}`,
@@ -264,12 +264,14 @@ const downloadFileGet = async (req, res, next) => {
             'content-disposition': `attachment; filename='${file.name}'`
         });
 
-        stream.pipe(res);
+        const writeStream = res;
 
-        } catch (error) {
-            console.log(error)
-            next(error);
-        };      
+        readStream.pipe(writeStream);
+
+    } catch (error) {
+        console.log(error)
+        next(error);
+    };      
 };
 
 export {

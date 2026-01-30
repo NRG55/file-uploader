@@ -1,8 +1,13 @@
 import { Router } from "express";
-import indexController from "../controllers/indexController.js";
+import { indexPageGet, sharedFolderGet } from "../controllers/indexController.js";
+import { downloadFileGet } from "../controllers/storageController.js";
 
-const router = Router();
+const indexRouter = Router();
 
-router.get('/', indexController);
+indexRouter.get('/', indexPageGet);
 
-export default router;
+indexRouter.get('/share/:sharedLinkId', sharedFolderGet);
+indexRouter.get('/share/:sharedLinkId/:folderId', sharedFolderGet);
+indexRouter.get('/share/:sharedLinkId/download-file/:fileId', downloadFileGet);
+
+export default indexRouter;

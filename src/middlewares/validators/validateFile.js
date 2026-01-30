@@ -18,15 +18,16 @@ const allowedTypes = [
 const validateFile = [
     body('uploadedFile')        
         .custom(async (value, { req }) => {
+            if (!req.file) {
+                throw new Error('File is required');
+            };
+            
             const fileName = req.file.originalname;
 
             if (invalidCharacters.test(fileName)) {
                 throw new Error(`File name cannot contain any of the following characters: < > : " / \\ | ? *`);
-            };            
-
-            if (!req.file) {
-                throw new Error('File is required');
             };
+
             console.log(req.file)
             const fileType = await fileTypeFromBuffer(req.file.buffer);
             console.log(fileType)

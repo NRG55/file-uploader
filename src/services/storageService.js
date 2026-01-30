@@ -1,7 +1,7 @@
 import prisma from '../config/prisma.js';
 import path from 'path';
 
-export const getFolderWithParentFolders = async (folderId) => {
+export const getFolderWithParentFolders = async (folderId, rootFolderId = null) => {
     if (!folderId) {
         return [];
     };
@@ -17,9 +17,14 @@ export const getFolderWithParentFolders = async (folderId) => {
                 name: true,
                 parentFolderId: true
              }
-        });
+        });       
 
         if (folder) {
+            // if shared folder
+            if (rootFolderId && folder.id === rootFolderId) {
+                folder.parentFolderId = null;
+            };
+
             foldersArray.unshift({ id: folder.id, name: folder.name.toLowerCase() });
             currentFolderId = folder.parentFolderId;
         
@@ -31,7 +36,7 @@ export const getFolderWithParentFolders = async (folderId) => {
     return foldersArray;
 };
 
-export const getFoldersTree = async (userId) => {
+export const getFoldersTree = async (userId, folderId = null) => {
     const folders = await prisma.folder.findMany({
         where: { userId },
         orderBy: { createdAt: 'asc'}
@@ -51,7 +56,7 @@ export const getFoldersTree = async (userId) => {
         );
     };
 
-    const foldersTreeArray = [];
+    let foldersTreeArray = [];
 
     for (const folder of folders) {
         const currentFolder = foldersMap.get(folder.id);
@@ -75,7 +80,11 @@ export const getFoldersTree = async (userId) => {
             // parentFolderId = null; (this is a root folder)
             foldersTreeArray.push(currentFolder);
         };
-    };  
+    };
+    
+    if (folderId) {
+        foldersTreeArray = [foldersMap.get(folderId)];        
+    };
 
     return foldersTreeArray;
 };

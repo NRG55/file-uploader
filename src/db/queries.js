@@ -166,6 +166,16 @@ const deleteFile = async (fileId) => {
     });   
 };
 
+// ---------------- SHARED LINK ----------------
+
+const getSharedLink = async (id) => {   
+    const link = await prisma.sharedLink.findUnique({
+        where: { id }      
+    });
+
+    return link;
+}
+
 export {
     createUser, 
     getUserByUsername,
@@ -179,5 +189,6 @@ export {
     getFolder,   
     createFile,
     getFileById,
-    createSharedLink
+    createSharedLink,
+    getSharedLink
 };

@@ -4,7 +4,7 @@
         folder.childFolders.forEach((folder) => { %>
             <div class="relative flex items-center justify-between mb-2">           
                 <a 
-                    href="/storage/<%= folder.id %>" 
+                    href="<%= locals.isSharedFolder ? `/share/${sharedLinkId}/${folder.id}` : `/storage/${folder.id}` %>"
                     class="folder-link relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4 border border-transparent  
                           hover:bg-gray-800"
                     data-type="folder"
@@ -17,17 +17,19 @@
                         <%= folder.name %>
                     </div>                                
                 </a>
-                <%- include("./rename_folder_or_file_form", { type: 'folder', folder }) %>
-                <div class="relative flex">
-                    <button 
-                        class="option-menu-button hover:bg-gray-800" 
-                        data-type="folder" 
-                        data-id="<%= folder.id %>"
-                    >
-                        <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
-                    </button>  
-                    <%- include("./folder_or_file_option_menu", { type: 'folder', folder: {id: folder.id, name: folder.name}, parentFolderId }) %>
-                </div>                                            
+                <% if (!locals.isSharedFolder) { %>
+                    <%- include("./rename_folder_or_file_form", { type: 'folder', folder }) %>
+                    <div class="relative flex">
+                        <button 
+                            class="option-menu-button hover:bg-gray-800" 
+                            data-type="folder" 
+                            data-id="<%= folder.id %>"
+                        >
+                            <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
+                        </button>  
+                        <%- include("./folder_or_file_option_menu", { type: 'folder', folder: {id: folder.id, name: folder.name}, parentFolderId }) %>
+                    </div>
+                <% } %>                                            
             </div>             
     <% })} %>
     <% if (locals.folder) {
@@ -41,7 +43,8 @@
                     data-size="<%= file.size %>"
                     data-mimetype="<%= file.mimeType %>"
                     data-created="<%= file.createdAt %>"
-                    data-url="<%= file.url %>" 
+                    data-url="<%= file.url %>"
+                    data-share-id="<%= locals.isSharedFolder ? sharedLinkId : '' %>" 
                     class="file-button open-file-details-modal-button relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4
                           hover:bg-gray-800"
                 >
@@ -52,17 +55,19 @@
                         <%= file.name %>
                     </div>                                
                 </button>
+                <% if (!locals.isSharedFolder) { %>
                 <%- include("./rename_folder_or_file_form", { type: 'file', file }) %>
-                <div class="relative flex">
-                    <button 
-                        class="option-menu-button hover:bg-gray-800" 
-                        data-id="<%= file.id %>"
-                        data-type="file"
-                    >
-                        <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
-                    </button>  
-                    <%- include("./folder_or_file_option_menu", { type: 'file', file: {id: file.id, name: file.name}, parentFolderId }) %>
-                </div>  
+                    <div class="relative flex">
+                        <button 
+                            class="option-menu-button hover:bg-gray-800" 
+                            data-id="<%= file.id %>"
+                            data-type="file"
+                        >
+                            <img src="/images/options.svg" class="cursor-pointer p-2 w-11"/>                        
+                        </button>  
+                        <%- include("./folder_or_file_option_menu", { type: 'file', file: {id: file.id, name: file.name}, parentFolderId }) %>
+                    </div>
+                <% } %>   
             </div>  
     <% })} %>     
 </div>

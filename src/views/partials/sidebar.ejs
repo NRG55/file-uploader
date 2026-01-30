@@ -8,7 +8,7 @@
                 <div 
                     class="container relative flex
                             <%= folder.parentFolderId === null 
-                            || folder.parentFolderId === 14 
+                            || folder.parentFolderId === rootFolderId 
                             || (folderWithParentFoldersArray && folderWithParentFoldersArray.some(element => element.id === folder.id || element.id === folder.parentFolderId)) 
                             ? '' : 'hidden' %>"                            
                     data-container-id="<%= folder.id %>"
@@ -30,7 +30,7 @@
                     <% } %>                        
                     <div class="folder-container w-full pl-6 grid" data-folder-container-id="<%= folder.id %>">                        
                         <a 
-                            href="/storage/<%= folder.id %>" 
+                            href="<%= locals.isSharedFolder ? `/share/${sharedLinkId}/${folder.id}` : `/storage/${folder.id}` %>" 
                             class="folder item text-gray-300 flex items-center whitespace-nowrap
                                 hover:bg-gray-800
                                 <%= folder.id === parentFolderId ? 'bg-gray-700' : '' %>"                                
