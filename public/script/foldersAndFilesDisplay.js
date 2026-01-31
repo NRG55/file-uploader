@@ -211,7 +211,7 @@ function openModalFileDetails() {
                 fileDetailsModal.classList.remove('hidden');
                 fileDetailsModal.classList.add('flex');              
                 fileDetailsForm.action = `/storage/${button.dataset.folderId}/download-${button.dataset.type}/${button.dataset.id}`;
-
+                
                 fileName.textContent = `Name: ${button.dataset.name}`;
                 fileType.textContent = `Type: ${button.dataset.mimetype}`;
                 fileSize.textContent = `Size: ${button.dataset.size}`;

@@ -34,15 +34,26 @@
     <% })} %>
     <% if (locals.folder) {
         folder.files.forEach((file) => { %>
+            <% const systemTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; %>
             <div class="flex items-center justify-between">           
                 <button                    
                     data-type="file"
                     data-id="<%= file.id %>"
                     data-folder-id="<%= file.folderId %>"
                     data-name="<%= file.name %>"
-                    data-size="<%= file.size %>"
+                    data-size="<%= file.size < 1000000 ? (file.size / 1000).toFixed(2) + ' KB' : (file.size / 1000000).toFixed(2) + ' MB' %>"
                     data-mimetype="<%= file.mimeType %>"
-                    data-created="<%= file.createdAt %>"
+                    data-created="<%= file.createdAt.toLocaleString('en-GB', { 
+                                        month: 'short', 
+                                        year: 'numeric', 
+                                        day: 'numeric', 
+                                        hour: '2-digit', 
+                                        minute: '2-digit', 
+                                        second: '2-digit', 
+                                        timeZone: systemTimeZone,
+                                        timeZoneName: 'short',
+                                        hour12: false 
+                                    }) %>"
                     data-url="<%= file.url %>"
                     data-share-id="<%= locals.isSharedFolder ? sharedLinkId : '' %>" 
                     class="file-button open-file-details-modal-button relative cursor-pointer flex gap-4 items-center w-full h-10 text-white pl-4

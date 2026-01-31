@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
     "dev:css": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch",
     "dev": "node --watch src/app.js"
   },
