@@ -31,6 +31,11 @@ app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/storage', notAuthRedirectToHomepage, storageRouter);
 
+app.use((error, req, res, next) => {
+    console.log(error);    
+    res.status(500).render('error', { errors: error.message  });
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, (error) => {
