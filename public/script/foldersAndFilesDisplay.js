@@ -1,5 +1,6 @@
 const container = document.getElementById('foldersAndFilesContainer');
 
+const optionMenuContainers = container.querySelectorAll('.option-menu-container');
 const optionMenus = container.querySelectorAll('.option-menu'); // folders and files option menus
 const optionMenuButtons = container.querySelectorAll('.option-menu-button');
 
@@ -58,6 +59,19 @@ function toggleOptionMenu() {
         };
     };   
 };
+
+// close option menu when clicked outside
+document.addEventListener('click', (event) => {
+    if (optionMenuContainers) {
+        optionMenuContainers.forEach((container, index) => {
+            if (!container.contains(event.target) 
+                && !optionMenuButtons[index].contains(event.target)
+                && !optionMenus[index].classList.contains('hidden') ) {              
+                optionMenus[index].classList.add('hidden');
+            };                                  
+        });
+    };    
+});
 
 function openRenameForm() {
     if (openRenameFormButtons) {
@@ -180,26 +194,20 @@ function closeModalDeleteFileOrFolder() {
 
 const fileDetailsModal = document.getElementById('fileDetailsModal');
 const fileDetailsForm = fileDetailsModal.querySelector('form');
-const openFileDetailsModalButtons = container.querySelectorAll('.open-file-details-modal-button');
+const openFileDetailsModalButtons = document.querySelectorAll('.open-file-details-modal-button');
 const closeFileDetailsModalButtons = fileDetailsForm.querySelectorAll('.close-file-details-modal-button');
 const fileName = fileDetailsForm.querySelector('p.name');
 const fileType = fileDetailsForm.querySelector('p.type');
 const fileSize = fileDetailsForm.querySelector('p.size');
 const fileCreated = fileDetailsForm.querySelector('p.created');
 const downloadFileButton = document.getElementById('downloadFileButton');
-
+// openFileDetailsModalButtons includes buttons from the sidebar and foldersAndFilesDisplay 
 function openModalFileDetails() {
     if (openFileDetailsModalButtons && fileDetailsModal) {
         for (const button of openFileDetailsModalButtons) {
             button.addEventListener("click", () => {
-                hideRenameForms();
-
-                if (optionMenus) {
-                    for (const optionMenu of optionMenus) {
-                        optionMenu.classList.add('hidden');                      
-                    };
-                };
-                
+                hideRenameForms();             
+              
                 fileDetailsModal.classList.remove('hidden');
                 fileDetailsModal.classList.add('flex');              
                 fileDetailsForm.action = `/storage/${button.dataset.folderId}/download-${button.dataset.type}/${button.dataset.id}`;

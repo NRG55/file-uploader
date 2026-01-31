@@ -16,7 +16,7 @@
                
                     <% if (folder.childFolders.length > 0 || folder.files.length > 0) { %>
                         <button 
-                            class="item absolute cursor-pointer top-1 transition
+                            class="arrow-button item absolute cursor-pointer top-1 transition
                                    <%= folder.parentFolderId === null                                 
                                    || folderWithParentFoldersArray && folderWithParentFoldersArray.some((element) => element.id === folder.id)
                                    ? 'rotate-90' : '' %> 
@@ -46,19 +46,26 @@
                         } %>
                         <% if (folder.files && folder.files.length > 0) {
                             folder.files.forEach((file) => { %>
-                                <a 
-                                    href="/storage/<%= file.id %>" 
-                                    class="file item text-gray-300 ml-8 flex whitespace-nowrap
+                                <button
+                                    data-type="file"
+                                    data-id="<%= file.id %>"
+                                    data-folder-id="<%= file.folderId %>"
+                                    data-name="<%= file.name %>"
+                                    data-size="<%= file.size %>"
+                                    data-mimetype="<%= file.mimeType %>"
+                                    data-created="<%= file.createdAt %>"
+                                    data-url="<%= file.url %>"
+                                    data-share-id="<%= locals.isSharedFolder ? sharedLinkId : '' %>"                                     
+                                    class="open-file-details-modal-button cursor-pointer text-gray-300 ml-8 flex whitespace-nowrap
                                         hover:bg-gray-800
                                         <%= folder.parentFolderId === null 
-                                        || folderWithParentFoldersArray && folderWithParentFoldersArray.some(segment => segment.id === file.folderId) ? '' : 'hidden' %>"
-                                    data-id="<%= folder.id %>"                                       
+                                        || folderWithParentFoldersArray && folderWithParentFoldersArray.some(segment => segment.id === file.folderId) ? '' : 'hidden' %>"                                                                          
                                 >
                                     <svg class="w-5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="#eaeae7" stroke-linejoin="round" stroke-width="1" d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"/>
                                     </svg>
                                     <%= file.name %>                       
-                                </a>
+                                </button>
                             <% }) %>
                         <% } %>                    
                     </div>

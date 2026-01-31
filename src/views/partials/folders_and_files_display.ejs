@@ -19,7 +19,7 @@
                 </a>
                 <% if (!locals.isSharedFolder) { %>
                     <%- include("./rename_folder_or_file_form", { type: 'folder', folder }) %>
-                    <div class="relative flex">
+                    <div class="option-menu-container relative flex">
                         <button 
                             class="option-menu-button hover:bg-gray-800" 
                             data-type="folder" 
@@ -57,7 +57,7 @@
                 </button>
                 <% if (!locals.isSharedFolder) { %>
                 <%- include("./rename_folder_or_file_form", { type: 'file', file }) %>
-                    <div class="relative flex">
+                    <div class="option-menu-container relative flex">
                         <button 
                             class="option-menu-button hover:bg-gray-800" 
                             data-id="<%= file.id %>"

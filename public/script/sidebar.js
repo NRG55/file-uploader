@@ -1,7 +1,7 @@
 const foldersTree = document.getElementById("foldersTree");
-const buttons = foldersTree.querySelectorAll('button');
+const arrowButtons = foldersTree.querySelectorAll('.arrow-button');
 
-for (const button of buttons) {
+for (const button of arrowButtons) {
     const mainContainer = document.querySelector(`[data-container-id='${button.dataset.id}']`);
     const containers = mainContainer.children;    
 
@@ -19,3 +19,5 @@ for (const button of buttons) {
         };
     });    
 };
+
+// sidebar openFileDetailsModalButtons listeners added in foldersAndFilesDisplay.js

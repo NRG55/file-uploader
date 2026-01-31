@@ -1,7 +1,7 @@
 import express from 'express';
 import validateSignup from '../middlewares/validators/validateSignup.js';
 import validateLogin from '../middlewares/validators/validateLogin.js';
-import checkAuthentication from '../middlewares/checkAuthentication.js';
+import isAuthRedirectToStorage from '../middlewares/isAuthRedirectToStorage.js';
 import {    
     handleSignupValidation,
     signupGet,
@@ -14,10 +14,10 @@ import {
 
 const authRouter = express.Router();
 
-authRouter.get('/sign-up', checkAuthentication, signupGet);
+authRouter.get('/sign-up', isAuthRedirectToStorage, signupGet);
 authRouter.post('/sign-up', validateSignup, handleSignupValidation, signupPost);
 
-authRouter.get('/log-in', checkAuthentication, loginGet);
+authRouter.get('/log-in', isAuthRedirectToStorage, loginGet);
 authRouter.post('/log-in', validateLogin, handleLoginValidation, loginPost);
 
 authRouter.get('/log-out', logoutGet);

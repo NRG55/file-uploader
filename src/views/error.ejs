@@ -15,7 +15,7 @@
                     <li class="text-gray-300 text-xl"><%= error.msg %></li>
                 <% }) %>
             </ul>
-            <a href="/storage" class="text-gray-400 self-start text-center
+            <a href="<%= currentUser ? '/storage' : '/' %>" class="text-gray-400 self-start text-center
                                         hover:text-gray-100">
                 Go back to home page
             </a>

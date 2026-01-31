@@ -26,11 +26,8 @@ const validateFile = [
 
             if (invalidCharacters.test(fileName)) {
                 throw new Error(`File name cannot contain any of the following characters: < > : " / \\ | ? *`);
-            };
-
-            console.log(req.file)
-            const fileType = await fileTypeFromBuffer(req.file.buffer);
-            console.log(fileType)
+            };          
+            
             if (!allowedTypes.includes(req.file.mimetype)) {
                 throw new Error(`File type is not supported. Allowed file types: TXT, PDF, JPG, PNG, WEBP, SVG, DOC, DOCX, XLS, XLSX.`)
             };

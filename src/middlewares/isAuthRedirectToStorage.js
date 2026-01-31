@@ -1,4 +1,4 @@
-const checkAuthentication = (req, res, next)  => {
+const isAuthRedirectToStorage = (req, res, next)  => {
     if (req.isAuthenticated()) {
         return res.redirect('/storage');
     };
@@ -6,4 +6,4 @@ const checkAuthentication = (req, res, next)  => {
     next();
 };
 
-export default checkAuthentication;
+export default isAuthRedirectToStorage;

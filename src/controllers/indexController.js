@@ -10,12 +10,19 @@ const indexPageGet = (req, res) => {
 
 const sharedFolderGet = async (req, res, next) => {
     const sharedLinkId = req.params.sharedLinkId;
-    const paramsFolderId = Number(req.params.folderId);
+    const paramsFolderId = Number(req.params.folderId);   
     const isSharedFolder = true;
     let folderId;
 
     try {
         const sharedLink = await getSharedLink(sharedLinkId);
+
+        if (!sharedLink) {
+            return res.status(400).render('error', {                
+                    errors: [{ msg: 'The shared link has expired or is invalid' }],
+                });
+        };
+
         const { userId, folderId: rootFolderId } = sharedLink;
 
         if (paramsFolderId) {

@@ -9,6 +9,7 @@ import indexRouter from './routes/indexRouter.js';
 import storageRouter from './routes/storageRouter.js';
 import authRouter from './routes/authRouter.js';
 import addCurrentUserToLocals from './middlewares/addCurrentUserToLocals.js';
+import notAuthRedirectToHomepage from './middlewares/notAuthRedirectToHomepage.js';
     
 const app = express();
 
@@ -28,7 +29,7 @@ app.use(addCurrentUserToLocals);
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
-app.use('/storage', storageRouter);
+app.use('/storage', notAuthRedirectToHomepage, storageRouter);
 
 const PORT = process.env.PORT || 3000;
 

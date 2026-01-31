@@ -170,7 +170,10 @@ const deleteFile = async (fileId) => {
 
 const getSharedLink = async (id) => {   
     const link = await prisma.sharedLink.findUnique({
-        where: { id }      
+        where: { 
+            id,
+            expiresAt: { gt: new Date() }
+         }      
     });
 
     return link;
