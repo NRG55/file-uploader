@@ -1,5 +1,10 @@
 <div id="foldersAndFilesContainer" class="flex-1 block bg-gray-900 p-4 border-t border-gray-700">
-    <%- include("./folders_nav_mobile") %>    
+    <%- include("./folders_nav_mobile") %>
+    <% if (folder.childFolders.length === 0 && folder.files.length === 0) { %>
+        <div class="flex justify-center">
+            <p class="mt-12 text-gray-600">Folder is empty</p>
+        </div>
+    <% } %>    
     <% if (locals.folder) { 
         folder.childFolders.forEach((folder) => { %>
             <div class="relative flex items-center justify-between mb-2">           
