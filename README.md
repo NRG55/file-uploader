@@ -29,6 +29,6 @@ A full-stack (backend-focused) file uploader application. The goal of this proje
 <table border="1" style="width:100%">
   <tr>
     <td><img src="./public/images/screenshot-desktop.png"/></td>
-    <td width="150"><img src="./public/images/screenshot-mobile.png"/></td>
+    <td width="155"><img src="./public/images/screenshot-mobile.png"/></td>
   </tr>
 </table>
