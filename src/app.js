@@ -33,7 +33,7 @@ app.use('/storage', notAuthRedirectToHomepage, storageRouter);
 
 app.use((error, req, res, next) => {
     console.log(error);    
-    res.status(500).render('error', { errors: error.message  });
+    res.status(500).render('error', { errors: [{ msg: 'We encountered an unexpected error. Please try again in a few minutes'}]  });
 });
 
 const PORT = process.env.PORT || 3000;
