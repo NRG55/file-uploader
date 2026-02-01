@@ -7,7 +7,7 @@
     </a>    
     <% if (!currentUser) { %>
         <div class="flex items-center">
-            <a href="/auth/log-in">
+            <a href="/auth/log-in">                
                 <button class="cursor-pointer mr-2 px-2 md:px-4 rounded-xs text-gray-300 shadow-lg border border-gray-600 hover:border-gray-700 transition">
                     Log in
                 </button>
@@ -18,11 +18,16 @@
                 </button>
             </a>
         </div>
-    <% } else { %>                                       
-        <a href="/auth/log-out" class="flex items-center">
-            <button class=" cursor-pointer px-4 rounded-xs text-gray-300 shadow-lg border border-gray-500 hover:border-gray-600 transition">
-                Log out
-            </button>
-        </a>       
+    <% } else { %>
+        <div class="flex items-center">
+            <div class="hidden md:block text-gray-400 mr-6">             
+                Hi, <%= currentUser.username %>
+            </div>                                       
+            <a href="/auth/log-out" class="flex items-center">            
+                <button class=" cursor-pointer px-4 rounded-xs text-gray-300 shadow-lg border border-gray-500 hover:border-gray-600 transition">
+                    Log out
+                </button>
+            </a>
+        </div>       
     <% } %>
 </header>
