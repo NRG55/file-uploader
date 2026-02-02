@@ -1,6 +1,7 @@
 import { validationResult, matchedData } from 'express-validator';
 import passport from '../config/passport.js';
 import { createUser, getUserByUsername } from '../db/queries.js';
+import cloudinary from '../config/cloudinary.js';
 
 // ------------- SIGN UP --------------
 
@@ -29,9 +30,12 @@ const signupPost = async (req, res, next) => {
     try {
         const { username, password } = matchedData(req);          
 
-        await createUser(username, password);          
-        // auto login after registration
+        await createUser(username, password);        
+
+        // auto login after registration and creating a root folder on cloudinary
         const user = await getUserByUsername(username);
+        
+        await cloudinary.api.create_folder(`file-uploader/user-${user.id}`);
 
         req.login(user, (error) => {
             if (error) {
@@ -45,6 +49,8 @@ const signupPost = async (req, res, next) => {
         next(error);
     };   
 };
+
+// --------------- LOGIN -------------------
 
 const handleLoginValidation = (req, res, next) => {
     const errors = validationResult(req);
@@ -62,8 +68,6 @@ const handleLoginValidation = (req, res, next) => {
     
     next();    
 };
-
-// --------------- LOGIN -------------------
 
 const loginGet = (req, res) => {
     res.render('log_in', { data: {} });
